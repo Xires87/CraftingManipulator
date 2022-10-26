@@ -1,3 +1,3 @@
 # CraftingManipulator
 
-my first library
+my first library (i dont know how to publish it xD)
