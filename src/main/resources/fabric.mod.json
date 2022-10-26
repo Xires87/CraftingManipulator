@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "craftingmanipulator",
+  "version": "${version}",
+
+  "name": "Crafting Manipulator",
+  "description": "Lets you block craftings and unlock them when specified conditions are met",
+  "authors": [
+    "Wookash Fryc"
+  ],
+  "contact": {
+    "email": "frycmod@gmail.com"
+  },
+
+  "license": "MIT",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.fryc.craftingmanipulator.RecipeBlocker"
+    ]
+  },
+  "mixins": [
+    "craftingmanipulator.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
