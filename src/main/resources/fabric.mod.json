@@ -18,7 +18,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fryc.craftingmanipulator.RecipeBlocker"
+      "net.fryc.craftingmanipulator.CraftingManipulator"
     ]
   },
   "mixins": [
