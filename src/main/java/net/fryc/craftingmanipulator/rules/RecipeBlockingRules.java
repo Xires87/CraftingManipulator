@@ -14,6 +14,11 @@ public class RecipeBlockingRules {
 
     protected static ArrayList<RecipeBlockingRules> recipeBlockingRules = new ArrayList<RecipeBlockingRules>();
 
+    /**
+     * Blocks recipes (they can't be unlocked) and appends tooltip "Uncraftable"
+     * @param tooltip - additional tooltip that will be displayed when player holds shift
+     * @param blockedItems - items that will be blocked with this rule
+     */
     public RecipeBlockingRules(String tooltip, TagKey<Item> blockedItems){
         this.ruleName = tooltip;
         this.blockedItems = blockedItems;
