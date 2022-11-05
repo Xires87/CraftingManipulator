@@ -1,9 +1,6 @@
 package net.fryc.craftingmanipulator.mixin;
 
-import net.fryc.craftingmanipulator.rules.BeOnBiomeRBR;
-import net.fryc.craftingmanipulator.rules.ItemInInventoryRBR;
-import net.fryc.craftingmanipulator.rules.RecipeBlockingRules;
-import net.fryc.craftingmanipulator.rules.StandNearBlockRBR;
+import net.fryc.craftingmanipulator.rules.*;
 import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
@@ -53,6 +50,14 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
                 else if(RecipeBlockingRules.getRecipeBlockingRules().get(i) instanceof BeOnBiomeRBR rule){
                     if(stack.isIn(rule.getBlockedItems())){
                         if(!ConditionsHelper.isOnCorrectBiome(player, world, rule.getNeededBiomes())){
+                            stack = ItemStack.EMPTY;
+                            break;
+                        }
+                    }
+                }
+                else if(RecipeBlockingRules.getRecipeBlockingRules().get(i) instanceof PlayerLevelRBR rule){
+                    if(stack.isIn(rule.getBlockedItems())){
+                        if(!ConditionsHelper.playerHasLevel(player, rule.getPlayerLevel(), rule.isBelowThisLvl())){
                             stack = ItemStack.EMPTY;
                             break;
                         }

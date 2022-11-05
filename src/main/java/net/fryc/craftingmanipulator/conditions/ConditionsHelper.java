@@ -30,4 +30,9 @@ public class ConditionsHelper {
     public static boolean isOnCorrectBiome(PlayerEntity player, World world, TagKey<Biome> biomes){
         return world.getBiomeAccess().getBiome(player.getBlockPos()).isIn(biomes);
     }
+
+    public static boolean playerHasLevel(PlayerEntity player, int playerLevel, boolean isBelow){
+        if(isBelow) return player.experienceLevel < playerLevel;
+        return player.experienceLevel >= playerLevel;
+    }
 }

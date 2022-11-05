@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Crafting Manipulator",
-  "description": "Lets you block craftings and unlock them when specified conditions are met",
+  "description": "Lets you lock/unlock recipes and more",
   "authors": [
     "Wookash Fryc"
   ],

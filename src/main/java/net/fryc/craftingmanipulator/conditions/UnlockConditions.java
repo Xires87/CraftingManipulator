@@ -4,6 +4,7 @@ public enum UnlockConditions {
     NONE,
     BLOCK_NEARBY,
     ITEM_IN_INVENTORY,
-    ON_BIOME
+    ON_BIOME,
+    PLAYER_LEVEL
 
 }
