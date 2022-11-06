@@ -16,20 +16,20 @@ dependencies {
 ```
 Replace TAG with version you want to use for example:
 ```groovy
-    modImplementation 'com.github.Xires87:CraftingManipulator:1.0.0'
+    modImplementation 'com.github.Xires87:CraftingManipulator:1.0.1'
 ```
 You will find available versions in releases
 
 ---------------------------------------------------------------------------
 
 # Classes:
-Currently, there are four classes:
+Currently, <s>there are four classes</s> (i will make wiki with all classes explained soon):
 * RecipeBlockingRules - blocks recipes (forever)
 * ItemInInventoryRBR - blocks recipes and unlocks them when player has specified item(-s) in inventory
 * StandNearBlockRBR - blocks recipes and unlocks them when player stands near specified block(-s)
 * BeOnBiomeRBR - blocks recipes and unlocks them when player is on one of specified biomes
 
-Additionally, all classes appends tooltip to blocked items (optional)
+Additionally, <s>all</s> classes appends tooltip to blocked items (optional)
 
 -----------
 How to use these classes:
