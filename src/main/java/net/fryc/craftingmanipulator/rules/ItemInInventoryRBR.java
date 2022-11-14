@@ -12,7 +12,7 @@ public class ItemInInventoryRBR extends RecipeBlockingRules{
 
     /**
      * Blocks recipes and unlocks them when player has required item(-s) in inventory
-     * @param tooltip - the name of the blocking rule (String)
+     * @param tooltip - tooltip that will be displayed on blocked items (String)
      * @param blockedItems - items blocked with this rule (TagKey<`Item>)
      * @param neededItems - items required to unlock recipe for items blocked by this rule (TagKey<`Item>)
      */

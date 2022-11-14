@@ -10,7 +10,11 @@ public class RecipeBlockingRules {
 
     private final String ruleName;
     private final TagKey<Item> blockedItems;
-    UnlockConditions unlockCondition;
+    protected UnlockConditions unlockCondition;
+    private boolean isReversed = false;
+    public void setReversed(boolean reverse){
+        this.isReversed = reverse;
+    }
 
     protected static ArrayList<RecipeBlockingRules> recipeBlockingRules = new ArrayList<RecipeBlockingRules>();
 
@@ -41,6 +45,10 @@ public class RecipeBlockingRules {
 
     public UnlockConditions getUnlockCondition() {
         return this.unlockCondition;
+    }
+
+    public boolean isReversed(){
+        return isReversed;
     }
 
 

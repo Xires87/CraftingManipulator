@@ -31,8 +31,41 @@ public class ConditionsHelper {
         return world.getBiomeAccess().getBiome(player.getBlockPos()).isIn(biomes);
     }
 
-    public static boolean playerHasLevel(PlayerEntity player, int playerLevel, boolean isBelow){
-        if(isBelow) return player.experienceLevel < playerLevel;
+    public static boolean playerHasLevel(PlayerEntity player, int playerLevel){
         return player.experienceLevel >= playerLevel;
+    }
+
+    public static boolean detectAndUnlock(UnlockConditions condition, PlayerEntity player, TagKey<?> tag, int requiredLevel){
+        if(condition == UnlockConditions.NONE) return true;
+        else if(condition == UnlockConditions.PLAYER_LEVEL) return playerHasLevel(player, requiredLevel);
+        else if(condition == UnlockConditions.ITEM_IN_INVENTORY){
+            try {
+                TagKey<Item> items = (TagKey<Item>)tag;
+                return hasCorrectItemInInventory(player, items);
+            }
+            catch (Exception e){
+                return false;
+            }
+        }
+        else if(condition == UnlockConditions.BLOCK_NEARBY){
+            try{
+                TagKey<Block> blocks = (TagKey<Block>)tag;
+                return standsNearCorrectBlock(player, player.getWorld(), blocks);
+            }
+            catch(Exception e){
+                return false;
+            }
+        }
+        else if(condition == UnlockConditions.ON_BIOME){
+            try{
+                TagKey<Biome> biomes = (TagKey<Biome>)tag;
+                return isOnCorrectBiome(player, player.getWorld(), biomes);
+            }
+            catch(Exception e){
+                return false;
+            }
+        }
+
+        return false;
     }
 }

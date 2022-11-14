@@ -9,11 +9,13 @@
     "Wookash Fryc"
   ],
   "contact": {
-    "email": "frycmod@gmail.com"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/crafting-manipulator",
+    "sources": "https://github.com/Xires87/CraftingManipulator",
+    "issues": "https://github.com/Xires87/CraftingManipulator/issues"
   },
 
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -33,5 +35,10 @@
   },
   "suggests": {
     "another-mod": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ]
+    }
   }
 }
