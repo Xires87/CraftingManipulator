@@ -10,8 +10,10 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
@@ -19,7 +21,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.UUID;
 
@@ -30,13 +32,14 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
     }
 
     //blocks recipes when specified conditions are not met
-    @ModifyVariable(method = "updateResult(Lnet/minecraft/screen/ScreenHandler;" +
+    @Redirect(method = "updateResult(Lnet/minecraft/screen/ScreenHandler;" +
             "Lnet/minecraft/world/World;" +
             "Lnet/minecraft/entity/player/PlayerEntity;" +
             "Lnet/minecraft/inventory/CraftingInventory;" +
             "Lnet/minecraft/inventory/CraftingResultInventory;)V",
-            at = @At(value = "STORE", ordinal = 1))
-    private static ItemStack blockRecipe(ItemStack stack , ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;)Lnet/minecraft/item/ItemStack;"))
+    private static ItemStack blockRecipe(CraftingRecipe recipe, Inventory inventory, ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+        ItemStack stack = recipe.craft(craftingInventory);
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
             for(int i = 0; i < RecipeBlockingRules.getRecipeBlockingRules().size(); i++){
@@ -110,6 +113,7 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
                 }
             }
         }
+
 
         return stack;
     }

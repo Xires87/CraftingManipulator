@@ -4,7 +4,7 @@ import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.tag.TagKey;
 
 public class AttributeModifierOCR extends OnCraftRules{
 

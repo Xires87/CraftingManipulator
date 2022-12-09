@@ -2,7 +2,8 @@ package net.fryc.craftingmanipulator.rules.oncraft;
 
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.item.Item;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.tag.TagKey;
+
 
 public class DurabilityOCR extends OnCraftRules{
 
