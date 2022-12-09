@@ -21,7 +21,7 @@ You will find available versions in [releases](https://github.com/Xires87/Crafti
 
 ---------------------------------------------------------------------------
 # [Wiki](https://github.com/Xires87/CraftingManipulator/wiki)
-# [Some examples](https://github.com/Xires87/FrycMod/blob/master/src/main/java/net/fryc/frycmod/FrycMod.java)
+# [Some examples](https://github.com/Xires87/FrycMod/blob/master/src/main/java/net/fryc/frycmod/crafting/CraftingRules.java)
 # [CurseForge](https://www.curseforge.com/minecraft/mc-mods/crafting-manipulator)
 
 
