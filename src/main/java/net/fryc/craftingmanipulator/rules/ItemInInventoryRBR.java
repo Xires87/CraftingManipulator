@@ -12,12 +12,25 @@ public class ItemInInventoryRBR extends RecipeBlockingRules{
 
     /**
      * Blocks recipes and unlocks them when player has required item(-s) in inventory
+     * @deprecated - use tooltip rule to append tooltip
      * @param tooltip - tooltip that will be displayed on blocked items (String)
      * @param blockedItems - items blocked with this rule (TagKey<`Item>)
      * @param neededItems - items required to unlock recipe for items blocked by this rule (TagKey<`Item>)
      */
+    @Deprecated
     public ItemInInventoryRBR(String tooltip, TagKey<Item> blockedItems, TagKey<Item> neededItems) {
         super(tooltip, blockedItems);
+        this.unlockCondition = UnlockConditions.ITEM_IN_INVENTORY;
+        this.neededItems = neededItems;
+    }
+
+    /**
+     * Blocks recipes and unlocks them when player has required item(-s) in inventory
+     * @param blockedItems - items blocked with this rule (TagKey<`Item>)
+     * @param neededItems - items required to unlock recipe for items blocked by this rule (TagKey<`Item>)
+     */
+    public ItemInInventoryRBR(TagKey<Item> blockedItems, TagKey<Item> neededItems) {
+        super(blockedItems);
         this.unlockCondition = UnlockConditions.ITEM_IN_INVENTORY;
         this.neededItems = neededItems;
     }

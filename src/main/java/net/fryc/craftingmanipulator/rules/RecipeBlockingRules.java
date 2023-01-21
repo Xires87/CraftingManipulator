@@ -20,11 +20,24 @@ public class RecipeBlockingRules {
 
     /**
      * Blocks recipes (they can't be unlocked) and appends tooltip "Uncraftable"
+     * @deprecated - use tooltip rule to append tooltip
      * @param tooltip - additional tooltip that will be displayed when player holds shift
      * @param blockedItems - items that will be blocked with this rule
      */
+    @Deprecated
     public RecipeBlockingRules(String tooltip, TagKey<Item> blockedItems){
         this.ruleName = tooltip;
+        this.blockedItems = blockedItems;
+        this.unlockCondition = UnlockConditions.NONE;
+        recipeBlockingRules.add(this);
+    }
+
+    /**
+     * Blocks recipes forever
+     * @param blockedItems - items that will be blocked with this rule
+     */
+    public RecipeBlockingRules(TagKey<Item> blockedItems){
+        this.ruleName = "";
         this.blockedItems = blockedItems;
         this.unlockCondition = UnlockConditions.NONE;
         recipeBlockingRules.add(this);

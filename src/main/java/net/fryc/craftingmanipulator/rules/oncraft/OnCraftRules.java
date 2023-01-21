@@ -4,6 +4,7 @@ package net.fryc.craftingmanipulator.rules.oncraft;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.screen.ScreenHandler;
 
 import java.util.ArrayList;
 
@@ -19,15 +20,38 @@ public class OnCraftRules {
     protected int unlockLevel;
     private boolean isReversed = false;
 
+
+
+    private ArrayList<Class<? extends ScreenHandler>> selectedScreenHandler = new ArrayList<>();
+    public ArrayList<Class<? extends ScreenHandler>> getSelectedScreenHandlers() {
+        return selectedScreenHandler;
+    }
     public void setReversed(boolean reverse){
         this.isReversed = reverse;
     }
 
 
+
+
     /**
+     * @param ruleItems - items affected by this rule
+     */
+    protected OnCraftRules(TagKey<Item> ruleItems){
+        this.ruleName = "";
+        this.ruleItems = ruleItems;
+        this.condition = UnlockConditions.NONE;
+        this.neededItems = ruleItems;
+        this.unlockLevel = 0;
+        onCraftRules.add(this);
+    }
+
+
+    /**
+     * @deprecated - use tooltip rule to append tooltip
      * @param tooltip   - tooltip that will be added to items specified in rule
      * @param ruleItems - items affected by this rule
      */
+    @Deprecated
     protected OnCraftRules(String tooltip, TagKey<Item> ruleItems){
         this.ruleName = tooltip;
         this.ruleItems = ruleItems;
@@ -64,5 +88,6 @@ public class OnCraftRules {
     public boolean isReversed(){
         return isReversed;
     }
+
 
 }

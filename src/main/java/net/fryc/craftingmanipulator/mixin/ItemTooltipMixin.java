@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.fryc.craftingmanipulator.rules.RecipeBlockingRules;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.fryc.craftingmanipulator.rules.oncraft.OnCraftRules;
+import net.fryc.craftingmanipulator.rules.tooltips.TooltipRules;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
@@ -27,6 +28,8 @@ abstract class ItemTooltipMixin implements ItemConvertible, FabricItem {
     @Inject(at = @At("HEAD"), method = "appendTooltip(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Ljava/util/List;Lnet/minecraft/client/item/TooltipContext;)V")
     private void tooltipsForBlockedItems(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context,CallbackInfo info) {
         Item dys = ((Item)(Object)this);
+
+        // code between this and next comment will soon be deleted
         List<RecipeBlockingRules> list = RecipeBlockingRules.getRecipeBlockingRules();
         List<OnCraftRules> seclist = OnCraftRules.getOnCraftRules();
         if(!list.isEmpty()){
@@ -71,5 +74,25 @@ abstract class ItemTooltipMixin implements ItemConvertible, FabricItem {
                 }
             }
         }
+        // ^^^ upper code will be deleted ^^^
+
+        List<TooltipRules> tooltips = TooltipRules.getTooltipRules();
+        if(!tooltips.isEmpty()){
+            for(TooltipRules rule : tooltips){
+                if(dys.getDefaultStack().isIn(rule.getAffectedItems())){
+                    if(rule.isPressingSelectedKey() && !rule.getTooltipWhenKeyPressed().isEmpty()){
+                        if(rule.forceAddingTooltip || !tooltip.contains(Text.literal(rule.getTooltipWhenKeyPressed()))){
+                            tooltip.add(Text.literal(rule.getTooltipWhenKeyPressed()).formatted(rule.tooltipWhenKeyPressedFormatting));
+                        }
+                    }
+                    else if(!rule.getTooltip().isEmpty()){
+                        if(rule.forceAddingTooltip || !tooltip.contains(Text.literal(rule.getTooltip()))){
+                            tooltip.add(Text.literal(rule.getTooltip()).formatted(rule.tooltipFormatting));
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

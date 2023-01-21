@@ -12,13 +12,25 @@ public class PlayerLevelRBR extends RecipeBlockingRules{
 
     /**
      * Blocks recipes and unlocks them when player has specified level
-     *
+     * @deprecated - use tooltip rule to append tooltip
      * @param tooltip      - tooltip displayed on blocked items. Leave it empty ("") if you don't want to display tooltip
      * @param blockedItems - items that will be blocked with this rule
      * @param playerLevel  - player level needed to unlock items
      */
+    @Deprecated
     public PlayerLevelRBR(String tooltip, TagKey<Item> blockedItems, int playerLevel) {
         super(tooltip, blockedItems);
+        this.playerLevel = playerLevel;
+        this.unlockCondition = UnlockConditions.PLAYER_LEVEL;
+    }
+
+    /**
+     * Blocks recipes and unlocks them when player has specified level
+     * @param blockedItems - items that will be blocked with this rule
+     * @param playerLevel  - player level needed to unlock items
+     */
+    public PlayerLevelRBR(TagKey<Item> blockedItems, int playerLevel) {
+        super(blockedItems);
         this.playerLevel = playerLevel;
         this.unlockCondition = UnlockConditions.PLAYER_LEVEL;
     }

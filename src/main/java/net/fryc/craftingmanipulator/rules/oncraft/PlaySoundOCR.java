@@ -20,7 +20,7 @@ public class PlaySoundOCR extends OnCraftRules{
      * @param pitch - idk
      */
     public PlaySoundOCR(TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch) {
-        super("", ruleItems);
+        super(ruleItems);
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
@@ -37,7 +37,7 @@ public class PlaySoundOCR extends OnCraftRules{
      * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
      */
     public PlaySoundOCR(TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch, UnlockConditions condition, TagKey<?> neededItems) {
-        super("", ruleItems);
+        super(ruleItems);
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
@@ -55,7 +55,7 @@ public class PlaySoundOCR extends OnCraftRules{
      * @param requiredLevel - level required to enable this OCR
      */
     public PlaySoundOCR(TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch, int requiredLevel) {
-        super("", ruleItems);
+        super(ruleItems);
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
