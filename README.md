@@ -15,7 +15,7 @@ dependencies {
 ```
 Replace TAG with version you want to use for example:
 ```groovy
-    modImplementation 'com.github.Xires87:CraftingManipulator:2.0.1'
+    modImplementation 'com.github.Xires87:CraftingManipulator:3.0.0'
 ```
 You will find available versions in [releases](https://github.com/Xires87/CraftingManipulator/releases)
 

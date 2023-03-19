@@ -66,67 +66,6 @@ public class AttributeModifierOCR extends OnCraftRules{
     }
 
 
-
-
-
-    /**
-     * Gives an attribute modifier to crafted armor
-     * @deprecated
-     * @param tooltip       - tooltip that will be added to items specified in rule
-     * @param ruleItems     - items affected by this rule
-     * @param attribute     - attribute that will be added
-     * @param value         - attributes value
-     * @param operation     - operation
-     */
-    @Deprecated
-    public AttributeModifierOCR(String tooltip, TagKey<Item> ruleItems, EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation) {
-        super(tooltip, ruleItems);
-        this.attribute = attribute;
-        this.value = value;
-        this.operation = operation;
-    }
-
-    /**
-     * Gives an attribute modifier to armor when player meets specified requirements
-     * @deprecated
-     * @param tooltip       - tooltip that will be added to items specified in rule
-     * @param ruleItems     - items affected by this rule
-     * @param attribute     - attribute that will be added
-     * @param value         - attributes value
-     * @param operation     - operation
-     * @param condition     - unlock condition: must be properly paired with tag
-     * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
-     */
-    @Deprecated
-    public AttributeModifierOCR(String tooltip, TagKey<Item> ruleItems, EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation, UnlockConditions condition, TagKey<?> neededItems) {
-        super(tooltip, ruleItems);
-        this.attribute = attribute;
-        this.value = value;
-        this.operation = operation;
-        this.condition = condition;
-        this.neededItems = neededItems;
-    }
-
-    /**
-     * Gives an attribute modifier to armor when player meets specified requirements
-     * @deprecated
-     * @param tooltip       - tooltip that will be added to items specified in rule
-     * @param ruleItems     - items affected by this rule
-     * @param attribute     - attribute that will be added
-     * @param value         - attributes value
-     * @param operation     - operation
-     * @param requiredLevel - level required to enable this OCR
-     */
-    @Deprecated
-    public AttributeModifierOCR(String tooltip, TagKey<Item> ruleItems, EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation, int requiredLevel) {
-        super(tooltip, ruleItems);
-        this.attribute = attribute;
-        this.value = value;
-        this.operation = operation;
-        this.condition = UnlockConditions.PLAYER_LEVEL;
-        this.unlockLevel = requiredLevel;
-    }
-
     public EntityAttribute getAttribute() {
         return attribute;
     }

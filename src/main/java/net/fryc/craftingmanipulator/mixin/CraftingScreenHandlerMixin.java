@@ -1,10 +1,10 @@
 package net.fryc.craftingmanipulator.mixin;
 
-import net.fryc.craftingmanipulator.rules.*;
 import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
 import net.fryc.craftingmanipulator.rules.oncraft.AttributeModifierOCR;
 import net.fryc.craftingmanipulator.rules.oncraft.DurabilityOCR;
 import net.fryc.craftingmanipulator.rules.oncraft.OnCraftRules;
+import net.fryc.craftingmanipulator.rules.recipeblocking.*;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +14,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
@@ -37,9 +38,9 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
             "Lnet/minecraft/entity/player/PlayerEntity;" +
             "Lnet/minecraft/inventory/CraftingInventory;" +
             "Lnet/minecraft/inventory/CraftingResultInventory;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;)Lnet/minecraft/item/ItemStack;"))
-    private static ItemStack blockRecipe(CraftingRecipe recipe, Inventory inventory, ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
-        ItemStack stack = recipe.craft(craftingInventory);
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
+    private static ItemStack blockRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+        ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
             for(int i = 0; i < RecipeBlockingRules.getRecipeBlockingRules().size(); i++){
@@ -119,7 +120,7 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
     }
 
     private static ItemStack setArmorProtection(ItemStack stack, ArmorItem item){
-        stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2960207a"),"Armor modifier", item.getMaterial().getProtectionAmount(item.getSlotType()), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
+        stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2960207a"),"Armor modifier", item.getMaterial().getProtection(item.getType()), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
         stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2950207a"),"Armor toughness", item.getMaterial().getToughness(), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
         stack.addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2940207a"),"Armor knockback resistance", item.getMaterial().getKnockbackResistance(), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
         return stack;

@@ -46,21 +46,6 @@ public class OnCraftRules {
     }
 
 
-    /**
-     * @deprecated - use tooltip rule to append tooltip
-     * @param tooltip   - tooltip that will be added to items specified in rule
-     * @param ruleItems - items affected by this rule
-     */
-    @Deprecated
-    protected OnCraftRules(String tooltip, TagKey<Item> ruleItems){
-        this.ruleName = tooltip;
-        this.ruleItems = ruleItems;
-        this.condition = UnlockConditions.NONE;
-        this.neededItems = ruleItems;
-        this.unlockLevel = 0;
-        onCraftRules.add(this);
-    }
-
     public static ArrayList<OnCraftRules> getOnCraftRules() {
         return onCraftRules;
     }
