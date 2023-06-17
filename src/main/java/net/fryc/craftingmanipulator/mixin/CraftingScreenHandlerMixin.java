@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
@@ -36,10 +37,10 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
     @Redirect(method = "updateResult(Lnet/minecraft/screen/ScreenHandler;" +
             "Lnet/minecraft/world/World;" +
             "Lnet/minecraft/entity/player/PlayerEntity;" +
-            "Lnet/minecraft/inventory/CraftingInventory;" +
+            "Lnet/minecraft/inventory/RecipeInputInventory;" +
             "Lnet/minecraft/inventory/CraftingResultInventory;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
-    private static ItemStack blockRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+    private static ItemStack blockRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
