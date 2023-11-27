@@ -34,11 +34,9 @@ public class ExperienceOCR extends OnCraftRules{
      * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
      */
     public ExperienceOCR(TagKey<Item> ruleItems, int amount, boolean isExperience, UnlockConditions condition, TagKey<?> neededItems) {
-        super(ruleItems);
+        super(ruleItems, condition, neededItems);
         this.xp = amount;
         this.isExperience = isExperience;
-        this.condition = condition;
-        this.neededItems = neededItems;
     }
 
     /**
@@ -50,19 +48,17 @@ public class ExperienceOCR extends OnCraftRules{
      * @param requiredLevel - level required to enable this OCR
      */
     public ExperienceOCR(TagKey<Item> ruleItems, int amount, boolean isExperience, int requiredLevel) {
-        super(ruleItems);
+        super(ruleItems, requiredLevel);
         this.xp = amount;
         this.isExperience = isExperience;
-        this.condition = UnlockConditions.PLAYER_LEVEL;
-        this.unlockLevel = requiredLevel;
     }
 
 
     public int getXp() {
-        return xp;
+        return this.xp;
     }
 
     public boolean isExperience() {
-        return isExperience;
+        return this.isExperience;
     }
 }

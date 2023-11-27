@@ -29,10 +29,8 @@ public class DurabilityOCR extends OnCraftRules{
      * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
      */
     public DurabilityOCR(TagKey<Item> ruleItems, int damage, UnlockConditions condition, TagKey<?> neededItems) {
-        super(ruleItems);
+        super(ruleItems, condition, neededItems);
         this.durability = damage;
-        this.condition = condition;
-        this.neededItems = neededItems;
     }
 
     /**
@@ -43,14 +41,12 @@ public class DurabilityOCR extends OnCraftRules{
      * @param requiredLevel - level required to enable this OCR
      */
     public DurabilityOCR(TagKey<Item> ruleItems, int damage, int requiredLevel) {
-        super(ruleItems);
+        super(ruleItems, requiredLevel);
         this.durability = damage;
-        this.condition = UnlockConditions.PLAYER_LEVEL;
-        this.unlockLevel = requiredLevel;
     }
 
 
     public int getDurability() {
-        return durability;
+        return this.durability;
     }
 }

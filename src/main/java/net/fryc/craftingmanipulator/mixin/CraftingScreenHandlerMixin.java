@@ -1,10 +1,9 @@
 package net.fryc.craftingmanipulator.mixin;
 
-import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
 import net.fryc.craftingmanipulator.rules.oncraft.AttributeModifierOCR;
 import net.fryc.craftingmanipulator.rules.oncraft.DurabilityOCR;
 import net.fryc.craftingmanipulator.rules.oncraft.OnCraftRules;
-import net.fryc.craftingmanipulator.rules.recipeblocking.*;
+import net.fryc.craftingmanipulator.rules.recipeblocking.RecipeBlockingRules;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,45 +43,19 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
         ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
-            for(int i = 0; i < RecipeBlockingRules.getRecipeBlockingRules().size(); i++){
-                if(stack.isIn(RecipeBlockingRules.getRecipeBlockingRules().get(i).getBlockedItems())){
-                    //ItemInInventoryRBR
-                    if(RecipeBlockingRules.getRecipeBlockingRules().get(i) instanceof ItemInInventoryRBR rule){
-                        if((!ConditionsHelper.hasCorrectItemInInventory(player, rule.getNeededItems()) && !rule.isReversed()) ||
-                                (ConditionsHelper.hasCorrectItemInInventory(player, rule.getNeededItems()) && rule.isReversed())){
-                            stack = ItemStack.EMPTY;
-                            break;
-                        }
-                    }
-                    //StandNearBlockRBR
-                    else if(RecipeBlockingRules.getRecipeBlockingRules().get(i) instanceof StandNearBlockRBR rule){
-                        if((!ConditionsHelper.standsNearCorrectBlock(player, world, rule.getNeededBlocks()) && !rule.isReversed()) ||
-                                (ConditionsHelper.standsNearCorrectBlock(player, world, rule.getNeededBlocks()) && rule.isReversed())){
-                            stack = ItemStack.EMPTY;
-                            break;
-                        }
-                    }
-                    //BeOnBiomeRBR
-                    else if(RecipeBlockingRules.getRecipeBlockingRules().get(i) instanceof BeOnBiomeRBR rule){
-                        if((!ConditionsHelper.isOnCorrectBiome(player, world, rule.getNeededBiomes()) && !rule.isReversed()) ||
-                                (ConditionsHelper.isOnCorrectBiome(player, world, rule.getNeededBiomes()) && rule.isReversed())){
-                            stack = ItemStack.EMPTY;
-                            break;
-                        }
-                    }
-                    //PlayerLevelRBR
-                    else if(RecipeBlockingRules.getRecipeBlockingRules().get(i) instanceof PlayerLevelRBR rule){
-                        if((!ConditionsHelper.playerHasLevel(player, rule.getPlayerLevel()) && !rule.isReversed()) ||
-                                (ConditionsHelper.playerHasLevel(player, rule.getPlayerLevel()) && rule.isReversed())){
-                            stack = ItemStack.EMPTY;
-                            break;
-                        }
-                    }
-                    //RecipeBlockingRules
-                    else {
-                        stack = ItemStack.EMPTY;
-                        break;
-                    }
+            for(RecipeBlockingRules bRule : RecipeBlockingRules.getRecipeBlockingRules()){
+                boolean isTag;
+                if(stack.isIn(bRule.getAffectedItems())){
+                    isTag = true;
+                }
+                else if(bRule.getAdditionalAffectedItems().contains(stack.getItem())){
+                    isTag = false;
+                }
+                else continue;
+
+                if(!bRule.conditionsAreMet(player/*tu dodatkowy parametr potrzebny*/)){ // todo sprawdzanie wartosci z setow i testy
+                    stack = ItemStack.EMPTY;
+                    break;
                 }
             }
         }
@@ -90,25 +63,26 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
         //getting OCR
         if(stack != ItemStack.EMPTY){
             if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
-                for(int i = 0; i < OnCraftRules.getOnCraftRules().size(); i++){
-                    if(stack.isIn(OnCraftRules.getOnCraftRules().get(i).getRuleItems())){
-                        //DurabilityOCR
-                        if(OnCraftRules.getOnCraftRules().get(i) instanceof DurabilityOCR rule){
+                for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
+                    boolean isTag;
+                    if(stack.isIn(oRule.getAffectedItems())){
+                        isTag = true;
+                    }
+                    else if(oRule.getAdditionalAffectedItems().contains(stack.getItem())){
+                        isTag = false;
+                    }
+                    else continue;
+
+                    if(oRule.conditionsAreMet(player)){ // todo sprawdzanie wartosci z setow i testy
+                        if(oRule instanceof DurabilityOCR rule){
                             if(stack.isDamageable()){
-                                if((ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
-                                        (!ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
-                                    stack.setDamage(rule.getDurability());
-                                }
+                                stack.setDamage(rule.getDurability());
                             }
                         }
-                        //AttributeModifierOCR
-                        else if(OnCraftRules.getOnCraftRules().get(i) instanceof AttributeModifierOCR rule){
+                        else if(oRule instanceof AttributeModifierOCR rule){
                             if(stack.getItem() instanceof ArmorItem item){
-                                if((ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
-                                        (!ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
-                                    stack = setArmorProtection(stack, item);
-                                    stack.addAttributeModifier(rule.getAttribute(), new EntityAttributeModifier("Custom modifiers", rule.getValue(), rule.getOperation()), item.getSlotType());
-                                }
+                                setArmorProtection(stack, item);
+                                stack.addAttributeModifier(rule.getAttribute(), new EntityAttributeModifier("Custom modifiers", rule.getValue(), rule.getOperation()), item.getSlotType());
                             }
                         }
                     }
@@ -116,15 +90,13 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
             }
         }
 
-
         return stack;
     }
 
-    private static ItemStack setArmorProtection(ItemStack stack, ArmorItem item){
+    private static void setArmorProtection(ItemStack stack, ArmorItem item){
         stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2960207a"),"Armor modifier", item.getMaterial().getProtection(item.getType()), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
         stack.addAttributeModifier(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2950207a"),"Armor toughness", item.getMaterial().getToughness(), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
         stack.addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, new EntityAttributeModifier(UUID.fromString("1943f7d5-061e-43d4-b1d5-8bea2940207a"),"Armor knockback resistance", item.getMaterial().getKnockbackResistance(), EntityAttributeModifier.Operation.ADDITION), item.getSlotType());
-        return stack;
     }
 
 }

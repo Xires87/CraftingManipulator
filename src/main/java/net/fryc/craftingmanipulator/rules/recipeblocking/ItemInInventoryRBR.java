@@ -1,6 +1,8 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
+import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 
@@ -21,5 +23,11 @@ public class ItemInInventoryRBR extends RecipeBlockingRules{
 
     public TagKey<Item> getNeededItems() {
         return neededItems;
+    }
+
+    @Override
+    public boolean conditionsAreMet(PlayerEntity player){
+        return (ConditionsHelper.hasCorrectItemInInventory(player, this.getNeededItems()) && !this.isReversed()) ||
+                (!ConditionsHelper.hasCorrectItemInInventory(player, this.getNeededItems()) && this.isReversed());
     }
 }

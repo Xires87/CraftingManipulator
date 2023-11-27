@@ -6,6 +6,10 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 
+/**
+ * @deprecated all custom attribute modifiers will disappear
+ */
+@Deprecated
 public class AttributeModifierOCR extends OnCraftRules{
 
     private final EntityAttribute attribute;
@@ -39,12 +43,10 @@ public class AttributeModifierOCR extends OnCraftRules{
      * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
      */
     public AttributeModifierOCR(TagKey<Item> ruleItems, EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation, UnlockConditions condition, TagKey<?> neededItems) {
-        super(ruleItems);
+        super(ruleItems, condition, neededItems);
         this.attribute = attribute;
         this.value = value;
         this.operation = operation;
-        this.condition = condition;
-        this.neededItems = neededItems;
     }
 
     /**
@@ -57,24 +59,22 @@ public class AttributeModifierOCR extends OnCraftRules{
      * @param requiredLevel - level required to enable this OCR
      */
     public AttributeModifierOCR(TagKey<Item> ruleItems, EntityAttribute attribute, double value, EntityAttributeModifier.Operation operation, int requiredLevel) {
-        super(ruleItems);
+        super(ruleItems, requiredLevel);
         this.attribute = attribute;
         this.value = value;
         this.operation = operation;
-        this.condition = UnlockConditions.PLAYER_LEVEL;
-        this.unlockLevel = requiredLevel;
     }
 
 
     public EntityAttribute getAttribute() {
-        return attribute;
+        return this.attribute;
     }
 
     public double getValue() {
-        return value;
+        return this.value;
     }
 
     public EntityAttributeModifier.Operation getOperation() {
-        return operation;
+        return this.operation;
     }
 }

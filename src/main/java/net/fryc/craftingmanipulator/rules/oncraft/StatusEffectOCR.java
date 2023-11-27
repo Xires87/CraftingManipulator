@@ -38,12 +38,10 @@ public class StatusEffectOCR extends OnCraftRules {
      * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
      */
     public StatusEffectOCR(TagKey<Item> ruleItems, StatusEffect effect, int duration, int amplifier, UnlockConditions condition, TagKey<?> neededItems) {
-        super(ruleItems);
+        super(ruleItems, condition, neededItems);
         this.effect = effect;
         this.duration = duration;
         this.amplifier = amplifier;
-        this.condition = condition;
-        this.neededItems = neededItems;
     }
 
     /**
@@ -56,24 +54,22 @@ public class StatusEffectOCR extends OnCraftRules {
      * @param requiredLevel - level required to enable this OCR
      */
     public StatusEffectOCR(TagKey<Item> ruleItems, StatusEffect effect, int duration, int amplifier, int requiredLevel) {
-        super(ruleItems);
+        super(ruleItems, requiredLevel);
         this.effect = effect;
         this.duration = duration;
         this.amplifier = amplifier;
-        this.condition = UnlockConditions.PLAYER_LEVEL;
-        this.unlockLevel = requiredLevel;
     }
 
 
     public StatusEffect getEffect() {
-        return effect;
+        return this.effect;
     }
 
     public int getDuration() {
-        return duration;
+        return this.duration;
     }
 
     public int getAmplifier() {
-        return amplifier;
+        return this.amplifier;
     }
 }

@@ -1,11 +1,13 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
+import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.world.biome.Biome;
 
-public class BeOnBiomeRBR extends RecipeBlockingRules{
+public class BeOnBiomeRBR extends RecipeBlockingRules {
 
     private final TagKey<Biome> neededBiomes;
 
@@ -22,5 +24,11 @@ public class BeOnBiomeRBR extends RecipeBlockingRules{
 
     public TagKey<Biome> getNeededBiomes() {
         return neededBiomes;
+    }
+
+    @Override
+    public boolean conditionsAreMet(PlayerEntity player){
+        return (ConditionsHelper.isOnCorrectBiome(player, player.getWorld(), this.getNeededBiomes()) && !this.isReversed()) ||
+                (!ConditionsHelper.isOnCorrectBiome(player, player.getWorld(), this.getNeededBiomes()) && this.isReversed());
     }
 }

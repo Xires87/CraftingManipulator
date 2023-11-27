@@ -1,5 +1,6 @@
 package net.fryc.craftingmanipulator.conditions;
 
+import net.fryc.craftingmanipulator.CraftingManipulator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -44,6 +45,7 @@ public class ConditionsHelper {
                 return hasCorrectItemInInventory(player, items);
             }
             catch (Exception e){
+                CraftingManipulator.LOGGER.error("Wrong UnlockCondition for rule! Error message: " + e.getMessage());
                 return false;
             }
         }
@@ -53,6 +55,7 @@ public class ConditionsHelper {
                 return standsNearCorrectBlock(player, player.getWorld(), blocks);
             }
             catch(Exception e){
+                CraftingManipulator.LOGGER.error("Wrong UnlockCondition for rule! Error message: " + e.getMessage());
                 return false;
             }
         }
@@ -62,6 +65,7 @@ public class ConditionsHelper {
                 return isOnCorrectBiome(player, player.getWorld(), biomes);
             }
             catch(Exception e){
+                CraftingManipulator.LOGGER.error("Wrong UnlockCondition for rule! Error message: " + e.getMessage());
                 return false;
             }
         }

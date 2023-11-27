@@ -26,25 +26,25 @@ abstract class OnCraftMixin {
         ItemStack dys = ((ItemStack)(Object)this);
         if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
             for(int i = 0; i < OnCraftRules.getOnCraftRules().size(); i++){
-                if(dys.isIn(OnCraftRules.getOnCraftRules().get(i).getRuleItems())){
+                if(dys.isIn(OnCraftRules.getOnCraftRules().get(i).getAffectedItems())){
                     if(OnCraftRules.getOnCraftRules().get(i).getSelectedScreenHandlers().contains(player.currentScreenHandler.getClass()) || OnCraftRules.getOnCraftRules().get(i).getSelectedScreenHandlers().isEmpty()){
                         if(OnCraftRules.getOnCraftRules().get(i) instanceof StatusEffectOCR rule){
-                            if((ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
-                                    (!ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
+                            if((ConditionsHelper.detectAndUnlock(rule.getUnlockCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
+                                    (!ConditionsHelper.detectAndUnlock(rule.getUnlockCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
                                 player.addStatusEffect(new StatusEffectInstance(rule.getEffect(), rule.getDuration(), rule.getAmplifier()));
                             }
                         }
                         else if(OnCraftRules.getOnCraftRules().get(i) instanceof ExperienceOCR rule){
-                            if((ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
-                                    (!ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
+                            if((ConditionsHelper.detectAndUnlock(rule.getUnlockCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
+                                    (!ConditionsHelper.detectAndUnlock(rule.getUnlockCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
                                 if(rule.isExperience()) player.addExperience(rule.getXp());
                                 else player.addExperienceLevels(rule.getXp());
                                 if(rule.getXp() > 0) world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, random.nextFloat(0.4F, 1.0F));
                             }
                         }
                         else if(OnCraftRules.getOnCraftRules().get(i) instanceof PlaySoundOCR rule){
-                            if((ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
-                                    (!ConditionsHelper.detectAndUnlock(rule.getCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
+                            if((ConditionsHelper.detectAndUnlock(rule.getUnlockCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && !rule.isReversed()) ||
+                                    (!ConditionsHelper.detectAndUnlock(rule.getUnlockCondition(), player, rule.getUnlockItems(), rule.getUnlockLevel()) && rule.isReversed())){
                                 world.playSound(player, player.getBlockPos(), rule.getSound(), SoundCategory.PLAYERS, rule.getVolume(), rule.getPitch());
                             }
                         }

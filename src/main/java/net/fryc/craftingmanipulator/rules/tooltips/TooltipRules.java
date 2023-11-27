@@ -1,6 +1,8 @@
 package net.fryc.craftingmanipulator.rules.tooltips;
 
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fryc.craftingmanipulator.conditions.PressedKey;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
@@ -8,6 +10,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 
+@Environment(EnvType.CLIENT)
 public class TooltipRules {
 
     private final TagKey<Item> affectedItems;

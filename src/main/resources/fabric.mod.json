@@ -21,6 +21,9 @@
   "entrypoints": {
     "main": [
       "net.fryc.craftingmanipulator.CraftingManipulator"
+    ],
+    "client": [
+      "net.fryc.craftingmanipulator.CraftingManipulatorClient"
     ]
   },
   "mixins": [

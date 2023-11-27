@@ -1,7 +1,9 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
+import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 
@@ -23,5 +25,11 @@ public class StandNearBlockRBR extends RecipeBlockingRules{
 
     public TagKey<Block> getNeededBlocks() {
         return neededBlocks;
+    }
+
+    @Override
+    public boolean conditionsAreMet(PlayerEntity player){
+        return (ConditionsHelper.standsNearCorrectBlock(player, player.getWorld(), this.getNeededBlocks()) && !this.isReversed()) ||
+                (!ConditionsHelper.standsNearCorrectBlock(player, player.getWorld(), this.getNeededBlocks()) && this.isReversed());
     }
 }
