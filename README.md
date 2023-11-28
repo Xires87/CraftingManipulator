@@ -1,6 +1,6 @@
 # CraftingManipulator
 
-Library mod for fabric that lets you make items craftable only when player meets specified conditions, or do something when player crafts specified items
+Library mod for fabric. Contains classes used to modify crafting results in crafting table
 
 
 You can use it as dependency by adding this to you build.gradle file:
@@ -15,13 +15,13 @@ dependencies {
 ```
 Replace TAG with version you want to use for example:
 ```groovy
-    modImplementation 'com.github.Xires87:CraftingManipulator:3.0.0'
+    modImplementation 'com.github.Xires87:CraftingManipulator:4.1.0'
 ```
 You will find available versions in [releases](https://github.com/Xires87/CraftingManipulator/releases)
 
 ---------------------------------------------------------------------------
 # [Wiki](https://github.com/Xires87/CraftingManipulator/wiki)
-# [Some examples](https://github.com/Xires87/FrycMod/blob/master/src/main/java/net/fryc/frycmod/crafting/CraftingRules.java)
+# [Some examples](https://github.com/Xires87/HammersAndSmithing/blob/master/src/main/java/net/fryc/hammersandtables/craftingManipulator/Rules.java)
 # [CurseForge](https://www.curseforge.com/minecraft/mc-mods/crafting-manipulator)
 
 
