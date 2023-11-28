@@ -4,6 +4,7 @@ import net.fryc.craftingmanipulator.rules.AbstractRule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -15,7 +16,7 @@ public class RecipeBlockingRules extends AbstractRule {
      * Blocks recipes forever
      * @param blockedItems - items that will be blocked with this rule
      */
-    public RecipeBlockingRules(TagKey<Item> blockedItems){
+    public RecipeBlockingRules(@Nullable TagKey<Item> blockedItems){
         super(blockedItems);
         recipeBlockingRules.add(this);
     }
@@ -26,9 +27,8 @@ public class RecipeBlockingRules extends AbstractRule {
 
 
 
-    public boolean conditionsAreMet(PlayerEntity player){
+    @Override
+    public boolean conditionsAreMet(PlayerEntity player) {
         return false;
     }
-
-
 }

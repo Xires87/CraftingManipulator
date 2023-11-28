@@ -3,21 +3,22 @@ package net.fryc.craftingmanipulator.rules;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 
 public abstract class AbstractRule implements ConditionChecker{
 
+    @Nullable
     private final TagKey<Item> affectedItems;
 
-    private final HashSet<Item> additionalAffectedItems;
+    private HashSet<Item> additionalAffectedItems;
 
     protected UnlockConditions unlockCondition = UnlockConditions.NONE;
     private boolean isReversed = false;
 
-    protected AbstractRule(TagKey<Item> affectedItems){
+    protected AbstractRule(@Nullable TagKey<Item> affectedItems){
         this.affectedItems = affectedItems;
-        this.additionalAffectedItems = new HashSet<>();
     }
 
 
@@ -29,12 +30,23 @@ public abstract class AbstractRule implements ConditionChecker{
         return this.isReversed;
     }
 
-    public TagKey<Item> getAffectedItems(){
+    public @Nullable TagKey<Item> getAffectedItems(){
         return this.affectedItems;
     }
 
     public HashSet<Item> getAdditionalAffectedItems(){
+        if(this.areAdditionalAffectedItemsNull()){
+            this.additionalAffectedItems = new HashSet<>();
+        }
         return this.additionalAffectedItems;
+    }
+
+    public void setAdditionalAffectedItems(HashSet<Item> additionalAffectedItems) {
+        this.additionalAffectedItems = additionalAffectedItems;
+    }
+
+    public boolean areAdditionalAffectedItemsNull(){
+        return this.additionalAffectedItems == null;
     }
 
     public UnlockConditions getUnlockCondition(){

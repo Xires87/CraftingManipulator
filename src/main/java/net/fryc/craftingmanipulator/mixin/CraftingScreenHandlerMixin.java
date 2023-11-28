@@ -44,16 +44,16 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
             for(RecipeBlockingRules bRule : RecipeBlockingRules.getRecipeBlockingRules()){
-                boolean isTag;
-                if(stack.isIn(bRule.getAffectedItems())){
-                    isTag = true;
+                boolean isTag = false;
+                if(bRule.getAffectedItems() != null){
+                    isTag = stack.isIn(bRule.getAffectedItems());
+                    if(!isTag && bRule.areAdditionalAffectedItemsNull()) continue;
                 }
-                else if(bRule.getAdditionalAffectedItems().contains(stack.getItem())){
-                    isTag = false;
+                if(!bRule.areAdditionalAffectedItemsNull() && !isTag){
+                    if(!bRule.getAdditionalAffectedItems().contains(stack.getItem())) continue;
                 }
-                else continue;
 
-                if(!bRule.conditionsAreMet(player/*tu dodatkowy parametr potrzebny*/)){ // todo sprawdzanie wartosci z setow i testy
+                if(!bRule.conditionsAreMet(player)){
                     stack = ItemStack.EMPTY;
                     break;
                 }
@@ -64,6 +64,7 @@ abstract class CraftingScreenHandlerMixin extends AbstractRecipeScreenHandler<Cr
         if(stack != ItemStack.EMPTY){
             if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
                 for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
+                    if(!(oRule instanceof DurabilityOCR || oRule instanceof AttributeModifierOCR)) continue;
                     boolean isTag;
                     if(stack.isIn(oRule.getAffectedItems())){
                         isTag = true;

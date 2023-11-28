@@ -28,8 +28,11 @@ public class PlayerLevelRBR extends RecipeBlockingRules{
 
     @Override
     public boolean conditionsAreMet(PlayerEntity player){
-        return (ConditionsHelper.playerHasLevel(player, this.getPlayerLevel()) && !this.isReversed()) ||
-                (!ConditionsHelper.playerHasLevel(player, this.getPlayerLevel()) && this.isReversed());
+        boolean returnValue = ConditionsHelper.playerHasLevel(player, this.getPlayerLevel());
+        if(this.isReversed()){
+            returnValue = !returnValue;
+        }
+        return returnValue;
     }
 
 }
