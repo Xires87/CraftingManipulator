@@ -1,9 +1,13 @@
 package net.fryc.craftingmanipulator.rules.oncraft;
 
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.world.World;
 
 public class PlaySoundOCR extends OnCraftRules{
 
@@ -17,7 +21,7 @@ public class PlaySoundOCR extends OnCraftRules{
      * @param ruleItems - items affected by this rule
      * @param sound - sound that will be played
      * @param volume - volume of the sound
-     * @param pitch - idk
+     * @param pitch - pitch of the sound
      */
     public PlaySoundOCR(TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch) {
         super(ruleItems);
@@ -32,7 +36,7 @@ public class PlaySoundOCR extends OnCraftRules{
      * @param ruleItems - items affected by this rule
      * @param sound - sound that will be played
      * @param volume - volume of the sound
-     * @param pitch - idk
+     * @param pitch - pitch of the sound
      * @param condition     - unlock condition: must be properly paired with tag
      * @param neededItems   - ItemTag, BlockTag or BiomeTag: required to enable this OCR
      */
@@ -49,7 +53,7 @@ public class PlaySoundOCR extends OnCraftRules{
      * @param ruleItems - items affected by this rule
      * @param sound - sound that will be played
      * @param volume - volume of the sound
-     * @param pitch - idk
+     * @param pitch - pitch of the sound
      * @param requiredLevel - level required to enable this OCR
      */
     public PlaySoundOCR(TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch, int requiredLevel) {
@@ -68,5 +72,15 @@ public class PlaySoundOCR extends OnCraftRules{
 
     public float getPitch() {
         return this.pitch;
+    }
+
+    @Override
+    public void apply(World world, PlayerEntity player, ItemStack stack) {
+        world.playSound(player, player.getBlockPos(), this.getSound(), SoundCategory.PLAYERS, this.getVolume(), this.getPitch());
+    }
+
+    @Override
+    public boolean canModifyItemStack() {
+        return false;
     }
 }

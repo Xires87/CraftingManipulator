@@ -15,12 +15,8 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements Additional
 
     @Nullable
     private final TagKey<Block> neededBlocks;
-    /**
-     * For making multiple rules use the same HashSet.
-     *  Use it only as setter
-     */
     @Nullable
-    public HashSet<Block> additionalNeededBlocks;
+    private HashSet<Block> additionalNeededBlocks;
 
 
     /**
@@ -54,6 +50,11 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements Additional
         }
         return returnValue;
     }
+
+    public void setAdditionalNeededThings(@Nullable HashSet<Block> additionalNeededBlocks) {
+        this.additionalNeededBlocks = additionalNeededBlocks;
+    }
+
 
     /**
      * If additionalNeededBlocks is null, a new HashSet will be assigned to it

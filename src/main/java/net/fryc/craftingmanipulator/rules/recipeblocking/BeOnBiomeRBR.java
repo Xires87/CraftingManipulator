@@ -16,12 +16,13 @@ public class BeOnBiomeRBR extends RecipeBlockingRules implements AdditionalNeede
 
     @Nullable
     private final TagKey<Biome> neededBiomes;
+
     /**
      * For making multiple rules use the same HashSet.
      *  Use it only as setter
      */
     @Nullable
-    public HashSet<RegistryKey<Biome>> additionalNeededBiomes;
+    private HashSet<RegistryKey<Biome>> additionalNeededBiomes;
 
     /**
      * Blocks recipes and unlocks them when player is on one of the biomes specified in tag
@@ -36,6 +37,10 @@ public class BeOnBiomeRBR extends RecipeBlockingRules implements AdditionalNeede
 
     public @Nullable TagKey<Biome> getNeededBiomes() {
         return this.neededBiomes;
+    }
+
+    public void setAdditionalNeededThings(@Nullable HashSet<RegistryKey<Biome>> additionalNeededBiomes) {
+        this.additionalNeededBiomes = additionalNeededBiomes;
     }
 
     @Override

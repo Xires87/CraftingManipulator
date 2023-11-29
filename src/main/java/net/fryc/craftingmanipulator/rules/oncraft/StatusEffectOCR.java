@@ -2,8 +2,12 @@ package net.fryc.craftingmanipulator.rules.oncraft;
 
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.world.World;
 
 public class StatusEffectOCR extends OnCraftRules {
 
@@ -71,5 +75,15 @@ public class StatusEffectOCR extends OnCraftRules {
 
     public int getAmplifier() {
         return this.amplifier;
+    }
+
+    @Override
+    public void apply(World world, PlayerEntity player, ItemStack stack) {
+        player.addStatusEffect(new StatusEffectInstance(this.getEffect(), this.getDuration(), this.getAmplifier()));
+    }
+
+    @Override
+    public boolean canModifyItemStack() {
+        return false;
     }
 }

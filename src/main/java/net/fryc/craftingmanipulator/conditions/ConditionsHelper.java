@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -62,36 +63,112 @@ public class ConditionsHelper {
         return player.experienceLevel >= playerLevel;
     }
 
-    public static boolean detectAndUnlock(UnlockConditions condition, PlayerEntity player, TagKey<?> tag, int requiredLevel){
-        if(condition == UnlockConditions.NONE) return true;
-        else if(condition == UnlockConditions.PLAYER_LEVEL) return playerHasLevel(player, requiredLevel);
-        else if(condition == UnlockConditions.ITEM_IN_INVENTORY){
+    public static boolean detectAndUnlock(UnlockConditions condition, PlayerEntity player, TagKey<?> tag){
+        if(condition == UnlockConditions.ITEM_IN_INVENTORY){
             try {
-                TagKey<Item> items = (TagKey<Item>)tag;
-                return hasCorrectItemInInventory(player, items); // todo sprobowac zrobic odblokowywanie zxa pomoca RBR-ow
+                TagKey<Item> items;
+                if (tag.isOf(RegistryKeys.ITEM)) {
+                    items = (TagKey<Item>) tag;
+                } else {
+                    CraftingManipulator.LOGGER.error("Wrong UnlockCondition for OCR rule!");
+                    return false;
+                }
+                return hasCorrectItemInInventory(player, items);
             }
             catch (Exception e){
-                CraftingManipulator.LOGGER.error("Wrong UnlockCondition for rule! Error message: " + e.getMessage());
+                CraftingManipulator.LOGGER.error("Something went wrong while checking TagKey for OCR rule. Error message: " + e.getMessage());
                 return false;
             }
         }
         else if(condition == UnlockConditions.BLOCK_NEARBY){
             try{
-                TagKey<Block> blocks = (TagKey<Block>)tag;
+                TagKey<Block> blocks;
+                if(tag.isOf(RegistryKeys.BLOCK)){
+                    blocks = (TagKey<Block>)tag;
+                }
+                else {
+                    CraftingManipulator.LOGGER.error("Wrong UnlockCondition for OCR rule!");
+                    return false;
+                }
                 return standsNearCorrectBlock(player, player.getWorld(), blocks);
             }
             catch(Exception e){
-                CraftingManipulator.LOGGER.error("Wrong UnlockCondition for rule! Error message: " + e.getMessage());
+                CraftingManipulator.LOGGER.error("Something went wrong while checking TagKey for OCR rule. Error message: " + e.getMessage());
+                return false;
+            }
+        }
+        else if(condition == UnlockConditions.ON_BIOME){
+            try {
+                TagKey<Biome> biomes;
+                if (tag.isOf(RegistryKeys.BIOME)) {
+                    biomes = (TagKey<Biome>) tag;
+                } else {
+                    CraftingManipulator.LOGGER.error("Wrong UnlockCondition for OCR rule!");
+                    return false;
+                }
+                return isOnCorrectBiome(player, player.getWorld(), biomes);
+            }
+            catch(Exception e){
+                CraftingManipulator.LOGGER.error("Something went wrong while checking TagKey for OCR rule. Error message: " + e.getMessage());
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean detectAndUnlock(UnlockConditions condition, PlayerEntity player, HashSet<?> set){
+        if(condition == UnlockConditions.ITEM_IN_INVENTORY){
+            try {
+                for(var cos : set){
+                    if(cos instanceof Item){
+                        break;
+                    }
+                    CraftingManipulator.LOGGER.error("Wrong UnlockCondition for OCR rule! Unlock Condition for " + cos.getClass().getName() +
+                            " expected, but " + condition.name() + " is present");
+                    return false;
+                }
+                HashSet<Item> items = (HashSet<Item>) set;
+                return hasCorrectItemInInventory(player, items);
+            }
+            catch (Exception e){
+                CraftingManipulator.LOGGER.error("Something went wrong while checking HashSet for OCR rule. Error message: " + e.getMessage());
+                return false;
+            }
+        }
+        else if(condition == UnlockConditions.BLOCK_NEARBY){
+            try{
+                for(var cos : set){
+                    if(cos instanceof Block){
+                        break;
+                    }
+                    CraftingManipulator.LOGGER.error("Wrong UnlockCondition for OCR rule! Unlock Condition for " + cos.getClass().getName() +
+                            " expected, but " + condition.name() + " is present");
+                    return false;
+                }
+                HashSet<Block> blocks = (HashSet<Block>)set;
+                return standsNearCorrectBlock(player, player.getWorld(), blocks);
+            }
+            catch(Exception e){
+                CraftingManipulator.LOGGER.error("Something went wrong while checking HashSet for OCR rule. Error message: " + e.getMessage());
                 return false;
             }
         }
         else if(condition == UnlockConditions.ON_BIOME){
             try{
-                TagKey<Biome> biomes = (TagKey<Biome>)tag;
+                for(var cos : set){
+                    if(cos instanceof RegistryKey){
+                        break;
+                    }
+                    CraftingManipulator.LOGGER.error("Wrong UnlockCondition for OCR rule! Unlock Condition for " + cos.getClass().getName() +
+                            " expected, but " + condition.name() + " is present");
+                    return false;
+                }
+                HashSet<RegistryKey<Biome>> biomes = (HashSet<RegistryKey<Biome>>)set;
                 return isOnCorrectBiome(player, player.getWorld(), biomes);
             }
             catch(Exception e){
-                CraftingManipulator.LOGGER.error("Wrong UnlockCondition for rule! Error message: " + e.getMessage());
+                CraftingManipulator.LOGGER.error("Something went wrong while checking HashSet for OCR rule. Error message: " + e.getMessage());
                 return false;
             }
         }

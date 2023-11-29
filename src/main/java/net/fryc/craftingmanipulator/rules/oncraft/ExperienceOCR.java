@@ -1,13 +1,21 @@
 package net.fryc.craftingmanipulator.rules.oncraft;
 
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class ExperienceOCR extends OnCraftRules{
 
     private final int xp;
     private final boolean isExperience;
+    private final Random random = new Random();
 
 
 
@@ -60,5 +68,17 @@ public class ExperienceOCR extends OnCraftRules{
 
     public boolean isExperience() {
         return this.isExperience;
+    }
+
+    @Override
+    public void apply(World world, PlayerEntity player, ItemStack stack) {
+        if(this.isExperience()) player.addExperience(this.getXp());
+        else player.addExperienceLevels(this.getXp());
+        if(this.getXp() > 0) world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, this.random.nextFloat(0.4F, 1.0F));
+    }
+
+    @Override
+    public boolean canModifyItemStack() {
+        return false;
     }
 }

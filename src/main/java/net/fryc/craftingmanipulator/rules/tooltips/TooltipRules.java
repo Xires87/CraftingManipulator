@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @Environment(EnvType.CLIENT)
 public class TooltipRules {
-
+// todo zrobic tooltipRules i jeszcze potestowac poprzednie bo moglo mi sie cos pomylic
     private final TagKey<Item> affectedItems;
 
     private final String tooltip;

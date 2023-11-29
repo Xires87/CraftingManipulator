@@ -14,12 +14,9 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements Additiona
 
     @Nullable
     private final TagKey<Item> neededItems;
-    /**
-     * For making multiple rules use the same HashSet.
-     *  Use it only as setter
-     */
+
     @Nullable
-    public HashSet<Item> additionalNeededItems;
+    private HashSet<Item> additionalNeededItems;
 
     /**
      * Blocks recipes and unlocks them when player has required item(-s) in inventory
@@ -50,6 +47,10 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements Additiona
             returnValue = !returnValue;
         }
         return returnValue;
+    }
+
+    public void setAdditionalNeededThings(@Nullable HashSet<Item> additionalNeededItems) {
+        this.additionalNeededItems = additionalNeededItems;
     }
 
     /**
