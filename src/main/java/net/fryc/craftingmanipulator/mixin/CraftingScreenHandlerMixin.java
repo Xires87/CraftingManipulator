@@ -38,7 +38,10 @@ abstract class CraftingScreenHandlerMixin {
                 }
                 if(!bRule.areAdditionalAffectedItemsNull() && !isTag){
                     if(!bRule.getAdditionalAffectedItems().contains(stack.getItem())) continue;
+                    isTag = true;
                 }
+
+                if(!isTag) continue;
 
                 if(!bRule.conditionsAreMet(player)){
                     stack = ItemStack.EMPTY;

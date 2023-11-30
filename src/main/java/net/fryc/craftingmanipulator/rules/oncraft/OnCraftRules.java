@@ -24,7 +24,7 @@ public abstract class OnCraftRules extends AbstractRule {
     private HashSet<?> additionalNeededThings;
     protected int unlockLevel;
 
-    protected static ArrayList<OnCraftRules> onCraftRules = new ArrayList<OnCraftRules>();
+    private static final ArrayList<OnCraftRules> onCraftRules = new ArrayList<OnCraftRules>();
     private final ArrayList<Class<? extends ScreenHandler>> selectedScreenHandler = new ArrayList<>();
 
 

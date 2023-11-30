@@ -6,26 +6,31 @@ import net.fabricmc.api.Environment;
 import net.fryc.craftingmanipulator.conditions.PressedKey;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Formatting;
+import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class TooltipRules {
-// todo zrobic tooltipRules i jeszcze potestowac poprzednie bo moglo mi sie cos pomylic
+    @Nullable
     private final TagKey<Item> affectedItems;
 
-    private final String tooltip;
+    @Nullable
+    private HashSet<Item> additionalAffectedItems;
+
+    @NotNull
+    private final Text tooltip;
 
     private final PressedKey pressedKey;
 
-    private final String tooltipWhenKeyPressed;
+    @Nullable
+    private final Text tooltipWhenKeyPressed;
 
-    private static ArrayList<TooltipRules> tooltipRules = new ArrayList<TooltipRules>();
-
-    public Formatting[] tooltipFormatting = new Formatting[]{};
-
-    public Formatting[] tooltipWhenKeyPressedFormatting = new Formatting[]{};
+    private static final ArrayList<TooltipRules> tooltipRules = new ArrayList<TooltipRules>();
 
     public boolean forceAddingTooltip = false;
 
@@ -35,11 +40,11 @@ public class TooltipRules {
      * @param affectedItems - tag containing items affected by this rule
      * @param tooltip - tooltip that will be added to items from tag
      */
-    public TooltipRules(TagKey<Item> affectedItems, String tooltip){
+    public TooltipRules(@Nullable TagKey<Item> affectedItems, @NotNull Text tooltip){
         this.affectedItems = affectedItems;
         this.tooltip = tooltip;
         this.pressedKey = PressedKey.NONE;
-        this.tooltipWhenKeyPressed = "";
+        this.tooltipWhenKeyPressed = null;
         tooltipRules.add(this);
     }
 
@@ -51,7 +56,7 @@ public class TooltipRules {
      * @param key - key that needs to be pressed to replace first tooltip with second tooltip
      * @param tooltipWhenKeyPressed - tooltip that will be displayed when player holds specified key
      */
-    public TooltipRules(TagKey<Item> affectedItems, String tooltip, PressedKey key, String tooltipWhenKeyPressed){
+    public TooltipRules(@Nullable TagKey<Item> affectedItems, @NotNull Text tooltip, PressedKey key, @Nullable Text tooltipWhenKeyPressed){
         this.affectedItems = affectedItems;
         this.tooltip = tooltip;
         this.pressedKey = key;
@@ -64,11 +69,11 @@ public class TooltipRules {
         return tooltipRules;
     }
 
-    public TagKey<Item> getAffectedItems() {
+    public @Nullable TagKey<Item> getAffectedItems() {
         return affectedItems;
     }
 
-    public String getTooltip() {
+    public @NotNull Text getTooltip() {
         return tooltip;
     }
 
@@ -80,8 +85,44 @@ public class TooltipRules {
         return this.pressedKey.isPressingKey();
     }
 
-    public String getTooltipWhenKeyPressed() {
+    public @Nullable Text getTooltipWhenKeyPressed() {
         return tooltipWhenKeyPressed;
     }
 
+    public @NotNull HashSet<Item> getAdditionalAffectedItems(){
+        if(this.additionalAffectedItems == null){
+            this.additionalAffectedItems = new HashSet<>();
+        }
+        return this.additionalAffectedItems;
+    }
+
+    public void setAdditionalAffectedItems(@Nullable HashSet<Item> additionalAffectedItems) {
+        this.additionalAffectedItems = additionalAffectedItems;
+    }
+
+    public boolean areAdditionalAffectedItemsNull(){
+        return this.additionalAffectedItems == null;
+    }
+
+    public void applyWhenPossible(List<Text> tooltip) {
+        if(this.isPressingSelectedKey()){
+            if(this.getTooltipWhenKeyPressed() != null){
+                if(this.forceAddingTooltip || dontHaveDuplicates(tooltip, this.getTooltipWhenKeyPressed())){
+                    tooltip.add(this.getTooltipWhenKeyPressed());
+                }
+            }
+        }
+        else {
+            if(this.forceAddingTooltip || dontHaveDuplicates(tooltip, this.getTooltip())){
+                tooltip.add(this.getTooltip());
+            }
+        }
+    }
+
+    public static boolean dontHaveDuplicates(List<Text> list, Text text){
+        for(Text tx : list){
+            if(tx.contains(text)) return false;
+        }
+        return true;
+    }
 }

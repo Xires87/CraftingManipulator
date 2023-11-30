@@ -27,18 +27,20 @@ abstract class ItemTooltipMixin implements ItemConvertible, FabricItem {
         List<TooltipRules> tooltips = TooltipRules.getTooltipRules();
         if(!tooltips.isEmpty()){
             for(TooltipRules rule : tooltips){
-                if(dys.getDefaultStack().isIn(rule.getAffectedItems())){
-                    if(rule.isPressingSelectedKey() && !rule.getTooltipWhenKeyPressed().isEmpty()){
-                        if(rule.forceAddingTooltip || !tooltip.contains(Text.literal(rule.getTooltipWhenKeyPressed()))){
-                            tooltip.add(Text.literal(rule.getTooltipWhenKeyPressed()).formatted(rule.tooltipWhenKeyPressedFormatting));
-                        }
-                    }
-                    else if(!rule.getTooltip().isEmpty()){
-                        if(rule.forceAddingTooltip || !tooltip.contains(Text.literal(rule.getTooltip()))){
-                            tooltip.add(Text.literal(rule.getTooltip()).formatted(rule.tooltipFormatting));
-                        }
-                    }
+                boolean isTag = false;
+                if(rule.getAffectedItems() != null){
+                    isTag = dys.getDefaultStack().isIn(rule.getAffectedItems());
+                    if(!isTag && rule.areAdditionalAffectedItemsNull()) continue;
                 }
+
+                if(!rule.areAdditionalAffectedItemsNull() && !isTag){
+                    if(!rule.getAdditionalAffectedItems().contains(dys)) continue;
+                    isTag = true;
+                }
+
+                if(!isTag) continue;
+
+                rule.applyWhenPossible(tooltip);
             }
         }
 

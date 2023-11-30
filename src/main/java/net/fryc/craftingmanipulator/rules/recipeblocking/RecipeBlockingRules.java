@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class RecipeBlockingRules extends AbstractRule {
-    protected static ArrayList<RecipeBlockingRules> recipeBlockingRules = new ArrayList<RecipeBlockingRules>();
+    private static final ArrayList<RecipeBlockingRules> recipeBlockingRules = new ArrayList<RecipeBlockingRules>();
 
 
     /**

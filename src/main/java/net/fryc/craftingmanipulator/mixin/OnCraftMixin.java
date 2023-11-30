@@ -24,9 +24,13 @@ abstract class OnCraftMixin {
                     isTag = dys.isIn(oRule.getAffectedItems());
                     if(!isTag && oRule.areAdditionalAffectedItemsNull()) continue;
                 }
+
                 if(!oRule.areAdditionalAffectedItemsNull() && !isTag){
                     if(!oRule.getAdditionalAffectedItems().contains(dys.getItem())) continue;
+                    isTag = true;
                 }
+
+                if(!isTag) continue;
 
                 if(oRule.conditionsAreMet(player)){
                     oRule.apply(world, player, dys);

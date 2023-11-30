@@ -3,6 +3,7 @@ package net.fryc.craftingmanipulator.rules;
 import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -12,6 +13,7 @@ public abstract class AbstractRule implements ConditionChecker{
     @Nullable
     private final TagKey<Item> affectedItems;
 
+    @Nullable
     private HashSet<Item> additionalAffectedItems;
 
     protected UnlockConditions unlockCondition = UnlockConditions.NONE;
@@ -34,14 +36,14 @@ public abstract class AbstractRule implements ConditionChecker{
         return this.affectedItems;
     }
 
-    public HashSet<Item> getAdditionalAffectedItems(){
-        if(this.areAdditionalAffectedItemsNull()){
+    public @NotNull HashSet<Item> getAdditionalAffectedItems(){
+        if(this.additionalAffectedItems == null){
             this.additionalAffectedItems = new HashSet<>();
         }
         return this.additionalAffectedItems;
     }
 
-    public void setAdditionalAffectedItems(HashSet<Item> additionalAffectedItems) {
+    public void setAdditionalAffectedItems(@Nullable HashSet<Item> additionalAffectedItems) {
         this.additionalAffectedItems = additionalAffectedItems;
     }
 
