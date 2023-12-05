@@ -31,17 +31,15 @@ abstract class CraftingScreenHandlerMixin {
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
             for(RecipeBlockingRules bRule : RecipeBlockingRules.getRecipeBlockingRules()){
-                boolean isTag = false;
+                boolean isAffected = false;
                 if(bRule.getAffectedItems() != null){
-                    isTag = stack.isIn(bRule.getAffectedItems());
-                    if(!isTag && bRule.areAdditionalAffectedItemsNull()) continue;
+                    isAffected = stack.isIn(bRule.getAffectedItems());
                 }
-                if(!bRule.areAdditionalAffectedItemsNull() && !isTag){
-                    if(!bRule.getAdditionalAffectedItems().contains(stack.getItem())) continue;
-                    isTag = true;
+                if(!bRule.areAdditionalAffectedItemsNull() && !isAffected){
+                    isAffected = bRule.getAdditionalAffectedItems().contains(stack.getItem());
                 }
 
-                if(!isTag) continue;
+                if(!isAffected) continue;
 
                 if(!bRule.conditionsAreMet(player)){
                     stack = ItemStack.EMPTY;
@@ -55,14 +53,15 @@ abstract class CraftingScreenHandlerMixin {
             if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
                 for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
                     if(!oRule.canModifyItemStack()) continue;
-                    boolean isTag = false;
+                    boolean isAffected = false;
                     if(oRule.getAffectedItems() != null){
-                        isTag = stack.isIn(oRule.getAffectedItems());
-                        if(!isTag && oRule.areAdditionalAffectedItemsNull()) continue;
+                        isAffected = stack.isIn(oRule.getAffectedItems());
                     }
-                    if(!oRule.areAdditionalAffectedItemsNull() && !isTag){
-                        if(!oRule.getAdditionalAffectedItems().contains(stack.getItem())) continue;
+                    if(!oRule.areAdditionalAffectedItemsNull() && !isAffected){
+                        isAffected = oRule.getAdditionalAffectedItems().contains(stack.getItem());
                     }
+
+                    if(!isAffected) continue;
 
                     if(oRule.conditionsAreMet(player)){
                         oRule.apply(world, player, stack);

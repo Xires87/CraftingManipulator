@@ -19,18 +19,16 @@ abstract class OnCraftMixin {
         if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
             for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
                 if(oRule.canModifyItemStack()) continue;
-                boolean isTag = false;
+                boolean isAffected = false;
                 if(oRule.getAffectedItems() != null){
-                    isTag = dys.isIn(oRule.getAffectedItems());
-                    if(!isTag && oRule.areAdditionalAffectedItemsNull()) continue;
+                    isAffected = dys.isIn(oRule.getAffectedItems());
                 }
 
-                if(!oRule.areAdditionalAffectedItemsNull() && !isTag){
-                    if(!oRule.getAdditionalAffectedItems().contains(dys.getItem())) continue;
-                    isTag = true;
+                if(!oRule.areAdditionalAffectedItemsNull() && !isAffected){
+                    isAffected = oRule.getAdditionalAffectedItems().contains(dys.getItem());
                 }
 
-                if(!isTag) continue;
+                if(!isAffected) continue;
 
                 if(oRule.conditionsAreMet(player)){
                     oRule.apply(world, player, dys);
