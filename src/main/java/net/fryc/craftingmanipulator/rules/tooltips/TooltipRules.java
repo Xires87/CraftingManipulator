@@ -34,6 +34,8 @@ public class TooltipRules {
 
     public boolean forceAddingTooltip = false;
 
+    public boolean isEnabled = true;
+
 
     /**
      * Adds tooltip to items specified in tag

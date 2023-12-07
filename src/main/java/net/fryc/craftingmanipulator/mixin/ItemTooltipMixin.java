@@ -27,6 +27,7 @@ abstract class ItemTooltipMixin implements ItemConvertible, FabricItem {
         List<TooltipRules> tooltips = TooltipRules.getTooltipRules();
         if(!tooltips.isEmpty()){
             for(TooltipRules rule : tooltips){
+                if(!rule.isEnabled) continue;
                 boolean isAffected = false;
                 if(rule.getAffectedItems() != null){
                     isAffected = dys.getDefaultStack().isIn(rule.getAffectedItems());

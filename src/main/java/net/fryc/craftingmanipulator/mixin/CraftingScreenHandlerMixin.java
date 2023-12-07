@@ -31,6 +31,7 @@ abstract class CraftingScreenHandlerMixin {
         //getting RBR
         if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
             for(RecipeBlockingRules bRule : RecipeBlockingRules.getRecipeBlockingRules()){
+                if(!bRule.isEnabled) continue;
                 boolean isAffected = false;
                 if(bRule.getAffectedItems() != null){
                     isAffected = stack.isIn(bRule.getAffectedItems());
@@ -52,6 +53,7 @@ abstract class CraftingScreenHandlerMixin {
         if(stack != ItemStack.EMPTY){
             if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
                 for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
+                    if(!oRule.isEnabled) continue;
                     if(!oRule.canModifyItemStack()) continue;
                     boolean isAffected = false;
                     if(oRule.getAffectedItems() != null){

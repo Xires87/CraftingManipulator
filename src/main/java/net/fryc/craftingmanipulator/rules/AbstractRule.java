@@ -18,6 +18,7 @@ public abstract class AbstractRule implements ConditionChecker{
 
     protected UnlockConditions unlockCondition = UnlockConditions.NONE;
     private boolean isReversed = false;
+    public boolean isEnabled = true;
 
     protected AbstractRule(@Nullable TagKey<Item> affectedItems){
         this.affectedItems = affectedItems;

@@ -18,6 +18,7 @@ abstract class OnCraftMixin {
         ItemStack dys = ((ItemStack)(Object)this);
         if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
             for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
+                if(!oRule.isEnabled) continue;
                 if(oRule.canModifyItemStack()) continue;
                 boolean isAffected = false;
                 if(oRule.getAffectedItems() != null){
