@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
+@Deprecated
 public class TooltipRules {
     @Nullable
     private final TagKey<Item> affectedItems;
