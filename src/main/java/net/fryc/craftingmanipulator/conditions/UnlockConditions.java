@@ -5,6 +5,6 @@ public enum UnlockConditions {
     BLOCK_NEARBY,
     ITEM_IN_INVENTORY,
     ON_BIOME,
-    PLAYER_LEVEL
+    PLAYER_LEVEL// todo dodac implementacje zeby dawalo te te no wiez
 
 }

@@ -1,34 +1,20 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
-import net.fryc.craftingmanipulator.rules.AbstractRule;
+import net.fryc.craftingmanipulator.rules.AbstractCraftingRule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+abstract class RecipeBlockingRules extends AbstractCraftingRule {
 
-public class RecipeBlockingRules extends AbstractRule {
-    private static final ArrayList<RecipeBlockingRules> recipeBlockingRules = new ArrayList<RecipeBlockingRules>();
-
-
-    /**
-     * Blocks recipes forever
-     * @param blockedItems - items that will be blocked with this rule
-     */
-    public RecipeBlockingRules(@Nullable TagKey<Item> blockedItems){
-        super(blockedItems);
-        recipeBlockingRules.add(this);
+    protected RecipeBlockingRules(@Nullable TagKey<Item> affectedItems) {
+        super(affectedItems);
     }
 
-    public static List<RecipeBlockingRules> getRecipeBlockingRules(){
-        return recipeBlockingRules;
-    }
-
-
-
-    @Override
-    public boolean conditionsAreMet(PlayerEntity player) {
-        return false;
+    public int modifyAmount(ItemStack craftedItem, int amount, PlayerEntity player, World world){
+        return amount;
     }
 }

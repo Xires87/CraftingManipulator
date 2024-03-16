@@ -1,16 +1,19 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
 import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
-import net.fryc.craftingmanipulator.conditions.UnlockConditions;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.CraftingResultInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 
-public class ItemInInventoryRBR extends RecipeBlockingRules implements AdditionalNeededThings{
+public class ItemInInventoryRBR extends RecipeBlockingRules implements HasUnlockCondition<Item> {
 
     @Nullable
     private final TagKey<Item> neededItems;
@@ -25,32 +28,13 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements Additiona
      */
     public ItemInInventoryRBR(@Nullable TagKey<Item> blockedItems, @Nullable TagKey<Item> neededItems) {
         super(blockedItems);
-        this.unlockCondition = UnlockConditions.ITEM_IN_INVENTORY;
         this.neededItems = neededItems;
     }
 
-    public @Nullable TagKey<Item> getNeededItems() {
-        return this.neededItems;
-    }
 
     @Override
-    public boolean conditionsAreMet(PlayerEntity player){
-        boolean returnValue = false;
-        if(this.getNeededItems() != null){
-            returnValue = ConditionsHelper.hasCorrectItemInInventory(player, this.getNeededItems());
-        }
-        if(!returnValue && !this.isAdditionalNeededThingsNull()) {
-            returnValue = ConditionsHelper.hasCorrectItemInInventory(player, this.getAdditionalNeededThings());
-        }
-
-        if(this.isReversed()){
-            returnValue = !returnValue;
-        }
-        return returnValue;
-    }
-
-    public void setAdditionalNeededThings(@Nullable HashSet<Item> additionalNeededItems) {
-        this.additionalNeededItems = additionalNeededItems;
+    public @Nullable TagKey<Item> getUnlockTag() {
+        return this.neededItems;
     }
 
     /**
@@ -58,18 +42,25 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements Additiona
      * @return additionalNeededItems
      */
     @Override
-    public @NotNull HashSet<Item> getAdditionalNeededThings() {
+    public HashSet<Item> getOrCreateUnlockThings() {
         if(this.additionalNeededItems == null){
             this.additionalNeededItems = new HashSet<>();
         }
         return this.additionalNeededItems;
     }
 
-    /**
-     * @return true when additionalNeededItems is null
-     */
     @Override
-    public boolean isAdditionalNeededThingsNull() {
-        return this.additionalNeededItems == null;
+    public void setUnlockThings(@Nullable HashSet<Item> additionalNeededItems) {
+        this.additionalNeededItems = additionalNeededItems;
+    }
+
+    @Override
+    public ItemStack modifyCraftedItem(ItemStack craftedItem, PlayerEntity player, World world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
+        if(this.isItemAffectedByThisRule(craftedItem)){
+            if(!ConditionsHelper.hasCorrectItemInInventory(player, this.neededItems, this.additionalNeededItems)){
+                return this.isReversed() ? craftedItem : ItemStack.EMPTY;
+            }
+        }
+        return craftedItem;
     }
 }

@@ -1,68 +1,68 @@
 package net.fryc.craftingmanipulator.conditions;
 
-import net.fryc.craftingmanipulator.CraftingManipulator;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
-import java.util.Optional;
 
 public class ConditionsHelper {
 
-    public static boolean hasCorrectItemInInventory(PlayerEntity player, TagKey<Item> items){
+    public static boolean hasCorrectItemInInventory(PlayerEntity player, @Nullable TagKey<Item> items, @Nullable HashSet<Item> additionalItems){
         for(int i = 0;i < player.getInventory().size(); i++){
-            if(player.getInventory().getStack(i).isIn(items)) return true;
+            if(isCorrectItem(player.getInventory().getStack(i), items, additionalItems)) return true;
         }
         return false;
     }
 
-    public static boolean hasCorrectItemInInventory(PlayerEntity player, HashSet<Item> items){
-        for(int i = 0;i < player.getInventory().size(); i++){
-            if(items.contains(player.getInventory().getStack(i).getItem())) return true;
+    private static boolean isCorrectItem(ItemStack stack, @Nullable TagKey<Item> items, @Nullable HashSet<Item> additionalItems){
+        boolean returnValue = false;
+        if(items != null){
+            returnValue = stack.isIn(items);
         }
-        return false;
+        if(!returnValue && additionalItems != null){
+            returnValue = additionalItems.contains(stack.getItem());
+        }
+        return returnValue;
     }
 
-    public static boolean standsNearCorrectBlock(PlayerEntity player, World world , TagKey<Block> blocks){
+    public static boolean standsNearCorrectBlock(PlayerEntity player, World world , @Nullable TagKey<Block> blocks, @Nullable HashSet<Block> additionalBlocks){
         BlockPos pos = player.getBlockPos();
         for (BlockPos blockPos : BlockPos.iterate(pos.add(-5, -2, -5), pos.add(5, 3, 5))) {
-            if (world.getBlockState(blockPos).isIn(blocks)){
+            if(isCorrectBlock(world.getBlockState(blockPos).getBlock(), blocks, additionalBlocks)){
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean standsNearCorrectBlock(PlayerEntity player, World world , HashSet<Block> blocks){
-        BlockPos pos = player.getBlockPos();
-        for (BlockPos blockPos : BlockPos.iterate(pos.add(-5, -2, -5), pos.add(5, 3, 5))) {
-            if (blocks.contains(world.getBlockState(blockPos).getBlock())){
-                return true;
-            }
+    private static boolean isCorrectBlock(Block block, @Nullable TagKey<Block> tagBlocks, @Nullable HashSet<Block> additionalBlocks){
+        boolean returnValue = false;
+        if(tagBlocks != null){
+            returnValue = block.getDefaultState().isIn(tagBlocks);
         }
-        return false;
+        if(!returnValue && additionalBlocks != null){
+            returnValue = additionalBlocks.contains(block);
+        }
+        return returnValue;
     }
 
-    public static boolean isOnCorrectBiome(PlayerEntity player, World world, TagKey<Biome> biomes){
+    public static boolean isOnCorrectBiome(PlayerEntity player, World world, @Nullable TagKey<Biome> biomes){
+        if(biomes == null) return false;
         return world.getBiomeAccess().getBiome(player.getBlockPos()).isIn(biomes);
-    }
-
-    public static boolean isOnCorrectBiome(PlayerEntity player, World world, HashSet<RegistryKey<Biome>> biomes){
-        Optional<RegistryKey<Biome>> optional = world.getBiome(player.getBlockPos()).getKey();
-        return optional.filter(biomes::contains).isPresent();
     }
 
     public static boolean playerHasLevel(PlayerEntity player, int playerLevel){
         return player.experienceLevel >= playerLevel;
     }
 
+    /*
     public static boolean detectAndUnlock(UnlockConditions condition, PlayerEntity player, TagKey<?> tag){
         if(condition == UnlockConditions.ITEM_IN_INVENTORY){
             try {
@@ -175,4 +175,6 @@ public class ConditionsHelper {
 
         return false;
     }
+
+     */
 }

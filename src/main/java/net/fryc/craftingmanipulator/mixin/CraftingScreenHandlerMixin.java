@@ -1,7 +1,7 @@
 package net.fryc.craftingmanipulator.mixin;
 
-import net.fryc.craftingmanipulator.rules.oncraft.OnCraftRules;
-import net.fryc.craftingmanipulator.rules.recipeblocking.RecipeBlockingRules;
+import net.fryc.craftingmanipulator.rules.CraftingRule;
+import net.fryc.craftingmanipulator.rules.RulesHolders;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
@@ -28,50 +28,10 @@ abstract class CraftingScreenHandlerMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack blockRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
-        //getting RBR
-        if(RecipeBlockingRules.getRecipeBlockingRules() != null && !RecipeBlockingRules.getRecipeBlockingRules().isEmpty()){
-            for(RecipeBlockingRules bRule : RecipeBlockingRules.getRecipeBlockingRules()){
-                if(!bRule.isEnabled) continue;
-                boolean isAffected = false;
-                if(bRule.getAffectedItems() != null){
-                    isAffected = stack.isIn(bRule.getAffectedItems());
-                }
-                if(!bRule.areAdditionalAffectedItemsNull() && !isAffected){
-                    isAffected = bRule.getAdditionalAffectedItems().contains(stack.getItem());
-                }
-
-                if(!isAffected) continue;
-
-                if(!bRule.conditionsAreMet(player)){
-                    stack = ItemStack.EMPTY;
-                    break;
-                }
-            }
+        for(CraftingRule rule : RulesHolders.CRAFTING_RULES.values()){
+            if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(handler)) continue;
+            stack = rule.modifyCraftedItem(stack, player, world, handler, craftingInventory, resultInventory);
         }
-
-        //getting OCR that can modify items
-        if(stack != ItemStack.EMPTY){
-            if(OnCraftRules.getOnCraftRules() != null && !OnCraftRules.getOnCraftRules().isEmpty()){
-                for(OnCraftRules oRule : OnCraftRules.getOnCraftRules()){
-                    if(!oRule.isEnabled) continue;
-                    if(!oRule.canModifyItemStack()) continue;
-                    boolean isAffected = false;
-                    if(oRule.getAffectedItems() != null){
-                        isAffected = stack.isIn(oRule.getAffectedItems());
-                    }
-                    if(!oRule.areAdditionalAffectedItemsNull() && !isAffected){
-                        isAffected = oRule.getAdditionalAffectedItems().contains(stack.getItem());
-                    }
-
-                    if(!isAffected) continue;
-
-                    if(oRule.conditionsAreMet(player)){
-                        oRule.apply(world, player, stack);
-                    }
-                }
-            }
-        }
-
         return stack;
     }
 

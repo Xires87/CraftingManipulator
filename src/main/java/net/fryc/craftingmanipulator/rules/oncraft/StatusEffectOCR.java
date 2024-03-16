@@ -77,13 +77,5 @@ public class StatusEffectOCR extends OnCraftRules {
         return this.amplifier;
     }
 
-    @Override
-    public void apply(World world, PlayerEntity player, ItemStack stack) {
-        player.addStatusEffect(new StatusEffectInstance(this.getEffect(), this.getDuration(), this.getAmplifier()));
-    }
 
-    @Override
-    public boolean canModifyItemStack() {
-        return false;
-    }
 }
