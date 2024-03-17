@@ -1,4 +1,4 @@
-package net.fryc.craftingmanipulator.conditions;
+package net.fryc.craftingmanipulator.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;

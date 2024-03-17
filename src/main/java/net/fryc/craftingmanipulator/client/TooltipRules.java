@@ -1,9 +1,9 @@
-package net.fryc.craftingmanipulator.rules.tooltips;
+package net.fryc.craftingmanipulator.client;
 
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fryc.craftingmanipulator.conditions.PressedKey;
+import net.fryc.craftingmanipulator.util.PressedKey;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;

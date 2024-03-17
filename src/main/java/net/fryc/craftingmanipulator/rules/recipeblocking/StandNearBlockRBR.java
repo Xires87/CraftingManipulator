@@ -1,6 +1,9 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
-import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fryc.craftingmanipulator.network.ModPackets;
+import net.fryc.craftingmanipulator.util.ConditionsHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
@@ -9,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,9 +65,15 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
     public ItemStack modifyCraftedItem(ItemStack craftedItem, PlayerEntity player, World world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         if(this.isItemAffectedByThisRule(craftedItem)){
             if(!ConditionsHelper.standsNearCorrectBlock(player, world, this.unlockBlocks, this.additionalUnlockBlocks)){
-                return this.isReversed() ? craftedItem : ItemStack.EMPTY;
+                craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;
+            }
+
+            if(craftedItem.isEmpty()){
+                ServerPlayNetworking.send((ServerPlayerEntity) player, ModPackets.SEND_INFO_ABOUT_ITEM_MODIFICATION, PacketByteBufs.empty());
             }
         }
+
+
         return craftedItem;
     }
 }

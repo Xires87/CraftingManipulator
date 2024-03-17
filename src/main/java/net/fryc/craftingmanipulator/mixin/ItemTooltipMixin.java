@@ -1,7 +1,7 @@
 package net.fryc.craftingmanipulator.mixin;
 
 import net.fabricmc.fabric.api.item.v1.FabricItem;
-import net.fryc.craftingmanipulator.rules.tooltips.TooltipRules;
+import net.fryc.craftingmanipulator.client.TooltipRules;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;

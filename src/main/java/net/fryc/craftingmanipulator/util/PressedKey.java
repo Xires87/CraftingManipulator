@@ -1,4 +1,4 @@
-package net.fryc.craftingmanipulator.conditions;
+package net.fryc.craftingmanipulator.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

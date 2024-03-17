@@ -1,6 +1,6 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
-import net.fryc.craftingmanipulator.conditions.ConditionsHelper;
+import net.fryc.craftingmanipulator.util.ConditionsHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;

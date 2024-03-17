@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 abstract class OnCraftMixin {
 
     @ModifyVariable(method = "onCraft(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;I)V", at = @At("HEAD"))
-    private int whenCrafted(World world, PlayerEntity player, int amount) {
-        ItemStack dys = ((ItemStack)(Object)this);
+    private int whenCrafted(int amount, World world, PlayerEntity player) {
+        ItemStack dys = ((ItemStack)(Object)this); // runs on client and server
         for(CraftingRule rule : RulesHolders.CRAFTING_RULES.values()){
             if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(player.currentScreenHandler)) continue;
             amount = rule.modifyAmount(dys, amount, player, world);
