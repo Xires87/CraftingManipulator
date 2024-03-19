@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fryc.craftingmanipulator.gui.Drawing;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
+import net.fryc.craftingmanipulator.util.DrawsSelectedTooltips;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -16,6 +17,9 @@ public class ResetDrawingS2CPacket {
         ClientPlayerEntity player = client.player;
         if(player != null && player.currentScreenHandler instanceof CraftingScreenHandler){
             ((DrawsSelectedTextures) player.currentScreenHandler).setItemIsModified(false);
+            if (((DrawsSelectedTooltips) player.currentScreenHandler).getTooltipsToDraw().size() > 0) {
+                ((DrawsSelectedTooltips) player.currentScreenHandler).getTooltipsToDraw().subList(0, ((DrawsSelectedTooltips) player.currentScreenHandler).getTooltipsToDraw().size()).clear();
+            }
         }
         for(Drawing drawing : CMRegistries.DRAWINGS.values()){
             drawing.enabled = false;

@@ -12,6 +12,7 @@ import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 public interface CraftingRule {
@@ -41,7 +42,7 @@ public interface CraftingRule {
     /**
      *
      * @param player Player using the screen handler
-     * @param drawingId Drawings to enable
+     * @param drawingId Drawings that will be drawn on gui
      */
     default void informAboutItemModification(ServerPlayerEntity player, String... drawingId){
         PacketByteBuf buf = PacketByteBufs.create();
@@ -50,6 +51,16 @@ public interface CraftingRule {
             buf.writeString(id);
         }
         ServerPlayNetworking.send(player, ModPackets.SEND_INFO_ABOUT_ITEM_MODIFICATION, buf);
+    }
+
+    default void drawMouseOverTooltip(ServerPlayerEntity player, Text content, int x, int y, int width, int height){
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeText(content);
+        buf.writeInt(x);
+        buf.writeInt(y);
+        buf.writeInt(width);
+        buf.writeInt(height);
+        ServerPlayNetworking.send(player, ModPackets.DRAW_MOUSE_OVER_TOOLTIP, buf);
     }
 
 }

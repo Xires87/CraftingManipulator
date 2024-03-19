@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,8 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
     private final TagKey<Block> unlockBlocks;
     @Nullable
     private HashSet<Block> additionalUnlockBlocks;
+
+    private static final Text TOOLTIP_ON_RED_X = Text.of("testujemy se tooltipy wololololololololololol");
 
 
 
@@ -63,6 +66,7 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
 
             if(craftedItem.isEmpty()){
                 this.informAboutItemModification((ServerPlayerEntity) player, "crafting_red_x");
+                this.drawMouseOverTooltip((ServerPlayerEntity) player, TOOLTIP_ON_RED_X, 87, 32, 28, 21);
             }
         }
 

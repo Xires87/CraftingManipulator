@@ -3,6 +3,7 @@ package net.fryc.craftingmanipulator.mixin;
 import net.fryc.craftingmanipulator.gui.Drawing;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
+import net.fryc.craftingmanipulator.util.DrawsSelectedTooltips;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import oshi.util.tuples.Pair;
 
 @Mixin(CraftingScreen.class)
 abstract class CraftingScreenMixin extends HandledScreen<CraftingScreenHandler> implements RecipeBookProvider {
@@ -38,8 +40,13 @@ abstract class CraftingScreenMixin extends HandledScreen<CraftingScreenHandler> 
                 }
             }
 
-            if(this.isPointWithinBounds(87, 32, 28, 21, (double)mouseX, (double)mouseY)){ // todo zrobic dla tooltipa jeszcze
-                context.drawOrderedTooltip(this.textRenderer, this.textRenderer.wrapLines(Text.of("test"), 115), mouseX, mouseY);
+
+        }
+        for(Pair<Text, int[]> pair : ((DrawsSelectedTooltips) dys.getScreenHandler()).getTooltipsToDraw()){
+            Text text = pair.getA();
+            int[] ints = pair.getB();
+            if(this.isPointWithinBounds(ints[0], ints[1], ints[2], ints[3], (double)mouseX, (double)mouseY)){
+                context.drawOrderedTooltip(this.textRenderer, this.textRenderer.wrapLines(text, 115), mouseX, mouseY);
             }
         }
     }
