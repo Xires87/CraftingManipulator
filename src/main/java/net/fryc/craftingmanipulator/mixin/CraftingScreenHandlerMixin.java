@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fryc.craftingmanipulator.network.ModPackets;
 import net.fryc.craftingmanipulator.rules.CraftingRule;
-import net.fryc.craftingmanipulator.rules.RulesHolders;
+import net.fryc.craftingmanipulator.registry.CMRegistries;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
@@ -41,7 +41,7 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack modifyItemFromRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager()); // runs only on server
-        for(CraftingRule rule : RulesHolders.CRAFTING_RULES.values()){
+        for(CraftingRule rule : CMRegistries.CRAFTING_RULES.values()){
             if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(handler)) continue;
             stack = rule.modifyCraftedItem(stack, player, world, handler, craftingInventory, resultInventory);
         }

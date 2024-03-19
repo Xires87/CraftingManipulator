@@ -1,8 +1,5 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fryc.craftingmanipulator.network.ModPackets;
 import net.fryc.craftingmanipulator.util.ConditionsHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,10 +41,6 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
 
 
 
-    /**
-     * If additionalNeededBlocks is null, a new HashSet will be assigned to it
-     * @return additionalNeededBlocks
-     */
     @Override
     public HashSet<Block> getOrCreateUnlockThings() {
         if(this.additionalUnlockBlocks == null){
@@ -69,7 +62,7 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
             }
 
             if(craftedItem.isEmpty()){
-                ServerPlayNetworking.send((ServerPlayerEntity) player, ModPackets.SEND_INFO_ABOUT_ITEM_MODIFICATION, PacketByteBufs.empty());
+                this.informAboutItemModification((ServerPlayerEntity) player, "crafting_red_x");
             }
         }
 
