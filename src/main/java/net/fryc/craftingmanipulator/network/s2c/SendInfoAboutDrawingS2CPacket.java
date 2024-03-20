@@ -8,19 +8,21 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.CraftingScreenHandler;
+import net.minecraft.screen.AbstractRecipeScreenHandler;
 
 public class SendInfoAboutDrawingS2CPacket {
 
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
         ClientPlayerEntity player = client.player;
-        if(player != null && player.currentScreenHandler instanceof CraftingScreenHandler){
-            ((DrawsSelectedTextures) player.currentScreenHandler).informAboutItemModification();
+        if(player != null){
+            if(player.currentScreenHandler instanceof AbstractRecipeScreenHandler<?>){
+                ((DrawsSelectedTextures) player.currentScreenHandler).informAboutItemModification();
 
-            while(buf.isReadable()){
-                Drawing drawing = CMRegistries.DRAWINGS.get(buf.readString());
-                if(drawing != null){
-                    drawing.enabled = true;
+                while(buf.isReadable()){
+                    Drawing drawing = CMRegistries.DRAWINGS.get(buf.readString());
+                    if(drawing != null){
+                        drawing.enabled = true;
+                    }
                 }
             }
         }

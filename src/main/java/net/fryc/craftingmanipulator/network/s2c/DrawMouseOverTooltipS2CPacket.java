@@ -6,8 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.CraftingScreenHandler;
-import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.text.Text;
 
 public class DrawMouseOverTooltipS2CPacket {
@@ -15,7 +14,7 @@ public class DrawMouseOverTooltipS2CPacket {
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
         ClientPlayerEntity player = client.player;
         if(player != null){
-            if(player.currentScreenHandler.getClass() == CraftingScreenHandler.class || player.currentScreenHandler.getClass() == PlayerScreenHandler.class){
+            if(player.currentScreenHandler instanceof AbstractRecipeScreenHandler<?>){
                 Text text = buf.readText();
                 int x = buf.readInt();
                 int y = buf.readInt();

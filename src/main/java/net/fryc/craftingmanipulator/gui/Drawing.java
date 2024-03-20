@@ -1,10 +1,12 @@
 package net.fryc.craftingmanipulator.gui;
 
 
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 
 public class Drawing {
 
+    private final Class<? extends ScreenHandler> targetScreenHandler;
     private final Identifier texture;
     private final int x;
     private final int y;
@@ -23,7 +25,8 @@ public class Drawing {
      * @param width Width of your drawing
      * @param height Height of your drawing
      */
-    public Drawing(Identifier texture, int x, int y, int xInFile, int yInFile, int width, int height){
+    public Drawing(Class<? extends ScreenHandler> targetScreenHandler, Identifier texture, int x, int y, int xInFile, int yInFile, int width, int height){
+        this.targetScreenHandler = targetScreenHandler;
         this.texture = texture;
         this.x = x;
         this.y = y;
@@ -33,6 +36,9 @@ public class Drawing {
         this.height = height;
     }
 
+    public Class<? extends ScreenHandler> getTargetScreenHandler() {
+        return this.targetScreenHandler;
+    }
     public Identifier getTexture() {
         return this.texture;
     }
@@ -59,5 +65,9 @@ public class Drawing {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public boolean isEnabled(Class<? extends ScreenHandler> currentScreenHandler){
+        return this.enabled && this.targetScreenHandler == currentScreenHandler;
     }
 }

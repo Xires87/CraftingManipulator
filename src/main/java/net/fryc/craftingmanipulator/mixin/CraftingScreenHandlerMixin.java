@@ -3,8 +3,8 @@ package net.fryc.craftingmanipulator.mixin;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fryc.craftingmanipulator.network.ModPackets;
-import net.fryc.craftingmanipulator.rules.CraftingRule;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
+import net.fryc.craftingmanipulator.rules.CraftingRule;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTooltips;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,9 +17,7 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.world.World;
-import org.apache.commons.compress.utils.Lists;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,19 +25,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import oshi.util.tuples.Pair;
-
-import java.util.List;
 
 @Mixin(CraftingScreenHandler.class)
 abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, DrawsSelectedTooltips {
 
-    private boolean isItemStackModified = false;
-
     @Shadow
     private @Final PlayerEntity player;
 
-    List<Pair<Text, int[]>> tooltipsToDraw = Lists.newArrayList();
 
     // runs only on server
     @Redirect(method = "updateResult(Lnet/minecraft/screen/ScreenHandler;" +
@@ -64,27 +56,4 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
         }
     }
 
-
-    public boolean hasEnabledDrawing() {
-        return this.isItemStackModified;
-    }
-
-    public boolean isItemModified() {
-        return this.isItemStackModified;
-    }
-    public void setItemIsModified(boolean modified) {
-        this.isItemStackModified = modified;
-    }
-
-    public void informAboutItemModification() {
-        this.isItemStackModified = true;
-    }
-
-    public void addTooltipToDraw(Text content, int x, int y, int width, int height) {
-        this.tooltipsToDraw.add(new Pair<>(content, new int[]{x, y, width, height}));
-    }
-
-    public List<Pair<Text, int[]>> getTooltipsToDraw() {
-        return this.tooltipsToDraw;
-    }
 }
