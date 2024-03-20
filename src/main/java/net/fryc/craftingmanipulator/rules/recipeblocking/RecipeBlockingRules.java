@@ -14,7 +14,6 @@ abstract class RecipeBlockingRules extends AbstractCraftingRule {
         super(affectedItems);
     }
 
-    public int modifyAmount(ItemStack craftedItem, int amount, PlayerEntity player, World world){
-        return amount;
+    public void onTakeOutput(ItemStack craftedItem, int amount, PlayerEntity player, World world){
     }
 }

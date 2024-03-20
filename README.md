@@ -1,23 +1,18 @@
 # CraftingManipulator
 
-Library mod for fabric. Contains classes used to modify crafting results in crafting table
+API used to modify crafting results in crafting table
 
 
-You can use it as dependency by adding this to you build.gradle file:
+For build.gradle:
 ```groovy
   repositories {
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    modImplementation 'com.github.Xires87:CraftingManipulator:TAG'
+    modImplementation 'com.github.Xires87:CraftingManipulator:4.2.0'
 }
 ```
-Replace TAG with version you want to use for example:
-```groovy
-    modImplementation 'com.github.Xires87:CraftingManipulator:4.1.0'
-```
-You will find available versions in [releases](https://github.com/Xires87/CraftingManipulator/releases)
 
 ---------------------------------------------------------------------------
 # [Wiki](https://github.com/Xires87/CraftingManipulator/wiki)

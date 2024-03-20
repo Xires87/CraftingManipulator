@@ -41,16 +41,17 @@ public class ExperienceOCR extends OnCraftRules{
     }
 
     @Override
-    public int modifyAmount(ItemStack craftedItem, int amount, PlayerEntity player, World world) {
-        if(this.isItemAffectedByThisRule(craftedItem)){
-            if(this.isExperience()){
-                player.addExperience(this.getXp());
+    public void onTakeOutput(ItemStack craftedItem, int amount, PlayerEntity player, World world) {
+        if(!world.isClient()){
+            if(this.isItemAffectedByThisRule(craftedItem)){
+                if(this.isExperience()){
+                    player.addExperience(this.getXp());
+                }
+                else {
+                    player.addExperienceLevels(this.getXp());
+                }
+                if(this.getXp() > 0) world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, this.random.nextFloat(0.4F, 1.0F));
             }
-            else {
-                player.addExperienceLevels(this.getXp());
-            }
-            if(this.getXp() > 0) world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, this.random.nextFloat(0.4F, 1.0F));
         }
-        return amount;
     }
 }

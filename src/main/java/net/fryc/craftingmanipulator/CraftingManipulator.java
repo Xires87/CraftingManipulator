@@ -3,6 +3,7 @@ package net.fryc.craftingmanipulator;
 import net.fabricmc.api.ModInitializer;
 import net.fryc.craftingmanipulator.gui.Drawing;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
+import net.fryc.craftingmanipulator.rules.oncraft.ExperienceOCR;
 import net.fryc.craftingmanipulator.rules.recipeblocking.StandNearBlockRBR;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
@@ -24,6 +25,9 @@ public class CraftingManipulator implements ModInitializer {
 		StandNearBlockRBR test = (StandNearBlockRBR) CMRegistries.registerCraftingRule("test_stand", new StandNearBlockRBR(null, null));
 		test.getOrCreateAdditionalAffectedItems().add(Items.OAK_PLANKS);
 		test.getOrCreateUnlockThings().add(Blocks.COBBLESTONE);
+
+		ExperienceOCR ocr = (ExperienceOCR) CMRegistries.registerCraftingRule("test_exp", new ExperienceOCR(null, 2, true));
+		ocr.getOrCreateAdditionalAffectedItems().add(Items.OAK_PLANKS);
 
 	}
 }

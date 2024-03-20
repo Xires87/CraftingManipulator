@@ -41,10 +41,11 @@ public class PlaySoundOCR extends OnCraftRules{
     }
 
     @Override
-    public int modifyAmount(ItemStack craftedItem, int amount, PlayerEntity player, World world) {
-        if(this.isItemAffectedByThisRule(craftedItem)){
-            world.playSound(player, player.getBlockPos(), this.getSound(), SoundCategory.PLAYERS, this.getVolume(), this.getPitch());
+    public void onTakeOutput(ItemStack craftedItem, int amount, PlayerEntity player, World world) {
+        if(!world.isClient()){
+            if(this.isItemAffectedByThisRule(craftedItem)){
+                world.playSound(player, player.getBlockPos(), this.getSound(), SoundCategory.PLAYERS, this.getVolume(), this.getPitch());
+            }
         }
-        return amount;
     }
 }

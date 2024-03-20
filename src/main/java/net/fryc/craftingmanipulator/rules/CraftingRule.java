@@ -18,14 +18,16 @@ import net.minecraft.world.World;
 public interface CraftingRule {
 
     /**
-     *  Executed only on SERVER, before item appears in result slot
+     *  Executed only on SERVER, before item appears in result slot.
+     *  Replacing an item with other item may collide with other rules (unless you replace it with ItemStack.EMPTY)
      */
     ItemStack modifyCraftedItem(ItemStack craftedItem, PlayerEntity player, World world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory);
 
     /**
-     *  Executed on both SERVER and CLIENT, after player takes output from result slot
+     * Executed on both SERVER and CLIENT, after player takes output from result slot.
+     * Modifying item doesn't work if player quick moves item from result slot
      */
-    int modifyAmount(ItemStack craftedItem, int amount, PlayerEntity player, World world);
+    void onTakeOutput(ItemStack craftedItem, int amount, PlayerEntity player, World world);
 
     default boolean isEnabled(){
         return true;

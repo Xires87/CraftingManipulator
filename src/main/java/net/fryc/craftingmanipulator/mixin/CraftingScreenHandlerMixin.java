@@ -41,6 +41,7 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
 
     List<Pair<Text, int[]>> tooltipsToDraw = Lists.newArrayList();
 
+    // runs only on server
     @Redirect(method = "updateResult(Lnet/minecraft/screen/ScreenHandler;" +
             "Lnet/minecraft/world/World;" +
             "Lnet/minecraft/entity/player/PlayerEntity;" +
@@ -48,7 +49,7 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
             "Lnet/minecraft/inventory/CraftingResultInventory;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack modifyItemFromRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
-        ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager()); // runs only on server
+        ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
         for(CraftingRule rule : CMRegistries.CRAFTING_RULES.values()){
             if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(handler)) continue;
             stack = rule.modifyCraftedItem(stack, player, world, handler, craftingInventory, resultInventory);

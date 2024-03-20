@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Crafting Manipulator",
-  "description": "Contains classes used to modify crafting results in crafting table",
+  "description": "API used to modify crafting results in crafting table",
   "authors": [
     "Wookash Fryc"
   ],
