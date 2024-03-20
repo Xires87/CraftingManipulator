@@ -17,6 +17,7 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,7 +45,7 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
         ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
         for(CraftingRule rule : CMRegistries.CRAFTING_RULES.values()){
             if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(handler)) continue;
-            stack = rule.modifyCraftedItem(stack, player, world, handler, craftingInventory, resultInventory);
+            stack = rule.modifyCraftedItem(stack, (ServerPlayerEntity) player, (ServerWorld) world, handler, craftingInventory, resultInventory);
         }
         return stack;
     }

@@ -1,14 +1,15 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
 import net.fryc.craftingmanipulator.util.ConditionsHelper;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.world.World;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerLevelRBR extends RecipeBlockingRules {
 
@@ -19,9 +20,17 @@ public class PlayerLevelRBR extends RecipeBlockingRules {
      * @param blockedItems - items that will be blocked with this rule
      * @param playerLevel  - player level needed to unlock items
      */
-    public PlayerLevelRBR(TagKey<Item> blockedItems, int playerLevel) {
+    public PlayerLevelRBR(@Nullable TagKey<Item> blockedItems, int playerLevel) {
         super(blockedItems);
         this.playerLevel = playerLevel;
+    }
+
+    /**
+     * Blocks recipes and unlocks them when player has specified level
+     * @param playerLevel  - player level needed to unlock items
+     */
+    public PlayerLevelRBR(int playerLevel) {
+        this(null, playerLevel);
     }
 
 
@@ -34,11 +43,13 @@ public class PlayerLevelRBR extends RecipeBlockingRules {
 
 
     @Override
-    public ItemStack modifyCraftedItem(ItemStack craftedItem, PlayerEntity player, World world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
+    public ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         if(this.isItemAffectedByThisRule(craftedItem)){
             if(!ConditionsHelper.playerHasLevel(player, this.playerLevel)){
                 return this.isReversed() ? craftedItem : ItemStack.EMPTY;
             }
+
+            this.drawRedCrossWhenNeeded(craftedItem, player, handler);
         }
         return craftedItem;
     }

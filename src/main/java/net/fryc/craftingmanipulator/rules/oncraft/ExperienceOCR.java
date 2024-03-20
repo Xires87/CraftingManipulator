@@ -7,6 +7,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -19,16 +20,26 @@ public class ExperienceOCR extends OnCraftRules{
 
 
     /**
-     * Gives player experience (or levels) after crafting spedified items
+     * Gives player experience (or levels) after crafting items specified in tag or HashSet
      *
      * @param ruleItems    - items affected by this rule
      * @param amount       - amount of experience (or levels) player will get
      * @param isExperience - when false, player will get levels instead of experience
      */
-    public ExperienceOCR(TagKey<Item> ruleItems, int amount, boolean isExperience) {
+    public ExperienceOCR(@Nullable TagKey<Item> ruleItems, int amount, boolean isExperience) {
         super(ruleItems);
         this.xp = amount;
         this.isExperience = isExperience;
+    }
+
+    /**
+     * Gives player experience (or levels) after crafting items specified in HashSet
+     *
+     * @param amount       - amount of experience (or levels) player will get
+     * @param isExperience - when false, player will get levels instead of experience
+     */
+    public ExperienceOCR(int amount, boolean isExperience) {
+        this(null, amount, isExperience);
     }
 
 

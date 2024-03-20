@@ -7,6 +7,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class PlaySoundOCR extends OnCraftRules{
 
@@ -15,18 +16,29 @@ public class PlaySoundOCR extends OnCraftRules{
     private final float pitch;
 
     /**
-     * Plays sound when player crafts item from tag
+     * Plays sound when player crafts item specified in tag or HashSet
      *
      * @param ruleItems - items affected by this rule
      * @param sound - sound that will be played
      * @param volume - volume of the sound
      * @param pitch - pitch of the sound
      */
-    public PlaySoundOCR(TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch) {
+    public PlaySoundOCR(@Nullable TagKey<Item> ruleItems, SoundEvent sound, float volume, float pitch) {
         super(ruleItems);
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
+    }
+
+    /**
+     * Plays sound when player crafts item specified in HashSet
+     *
+     * @param sound - sound that will be played
+     * @param volume - volume of the sound
+     * @param pitch - pitch of the sound
+     */
+    public PlaySoundOCR(SoundEvent sound, float volume, float pitch) {
+        this(null, sound, volume, pitch);
     }
 
     public SoundEvent getSound() {

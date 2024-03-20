@@ -27,7 +27,7 @@ abstract class InventoryScreenMixin extends AbstractInventoryScreen<PlayerScreen
     @Inject(at = @At("TAIL"), method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V")
     protected void drawThingsFromRulesOnInventoryScreen(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo info) {
         InventoryScreen dys = ((InventoryScreen)(Object)this);
-        if(((DrawsSelectedTextures) dys.getScreenHandler()).hasEnabledDrawing()){ // todo musze tez pamietac ze w player screen handlerze tez to dziala i musze dac inna pozycje
+        if(((DrawsSelectedTextures) dys.getScreenHandler()).hasEnabledDrawing()){
             for(Drawing drawing : CMRegistries.DRAWINGS.values()){
                 if(drawing.isEnabled(dys.getScreenHandler().getClass())){
                     if(drawing.getTexture() != null){

@@ -1,14 +1,14 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
 import net.fryc.craftingmanipulator.util.ConditionsHelper;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.world.World;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -22,13 +22,20 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements HasUnlock
     private HashSet<Item> additionalNeededItems;
 
     /**
-     * Blocks recipes and unlocks them when player has required item(-s) in inventory
-     * @param blockedItems - items blocked with this rule (TagKey<`Item>)
-     * @param neededItems - items required to unlock recipe for items blocked by this rule (TagKey<`Item>)
+     * Blocks recipes and unlocks them when player has one of the items specified in tag or HashSet
+     * @param blockedItems - items blocked with this rule
+     * @param neededItems - items required to unlock recipe for items blocked by this rule
      */
     public ItemInInventoryRBR(@Nullable TagKey<Item> blockedItems, @Nullable TagKey<Item> neededItems) {
         super(blockedItems);
         this.neededItems = neededItems;
+    }
+
+    /**
+     * Blocks recipes and unlocks them when player has one of the items specified in HashSet
+     */
+    public ItemInInventoryRBR() {
+        this(null, null);
     }
 
 
@@ -37,10 +44,6 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements HasUnlock
         return this.neededItems;
     }
 
-    /**
-     * If additionalNeededItems is null, a new HashSet will be assigned to it
-     * @return additionalNeededItems
-     */
     @Override
     public HashSet<Item> getOrCreateUnlockThings() {
         if(this.additionalNeededItems == null){
@@ -55,11 +58,13 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements HasUnlock
     }
 
     @Override
-    public ItemStack modifyCraftedItem(ItemStack craftedItem, PlayerEntity player, World world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
+    public ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         if(this.isItemAffectedByThisRule(craftedItem)){
             if(!ConditionsHelper.hasCorrectItemInInventory(player, this.neededItems, this.additionalNeededItems)){
                 return this.isReversed() ? craftedItem : ItemStack.EMPTY;
             }
+
+            this.drawRedCrossWhenNeeded(craftedItem, player, handler);
         }
         return craftedItem;
     }

@@ -27,13 +27,14 @@ public class CraftingManipulator implements ModInitializer {
 		CMRegistries.registerDrawing("inventory_red_x", new Drawing(
 				PlayerScreenHandler.class, CM_DRAWINGS_INVENTORY_TEXTURE, 134, 28, 2, 50, 18, 15
 		));
+		// todo dodac 2 rysunki levela
 
 		// todo usunac ponizsze jak skoncze testy
-		StandNearBlockRBR test = (StandNearBlockRBR) CMRegistries.registerCraftingRule("test_stand", new StandNearBlockRBR(null, null));
+		StandNearBlockRBR test = (StandNearBlockRBR) CMRegistries.registerCraftingRule("test_stand", new StandNearBlockRBR());
 		test.getOrCreateAdditionalAffectedItems().add(Items.OAK_PLANKS);
 		test.getOrCreateUnlockThings().add(Blocks.COBBLESTONE);
 
-		ExperienceOCR ocr = (ExperienceOCR) CMRegistries.registerCraftingRule("test_exp", new ExperienceOCR(null, 2, true));
+		ExperienceOCR ocr = (ExperienceOCR) CMRegistries.registerCraftingRule("test_exp", new ExperienceOCR(2, true));
 		ocr.getOrCreateAdditionalAffectedItems().add(Items.OAK_PLANKS);
 
 	}
