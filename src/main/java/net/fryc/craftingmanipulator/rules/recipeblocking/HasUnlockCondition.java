@@ -1,6 +1,6 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.TagKey;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;

@@ -4,10 +4,10 @@ import net.fryc.craftingmanipulator.rules.AbstractCraftingRule;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.tag.TagKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 

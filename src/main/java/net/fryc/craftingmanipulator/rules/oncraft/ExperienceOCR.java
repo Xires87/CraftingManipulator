@@ -3,9 +3,9 @@ package net.fryc.craftingmanipulator.rules.oncraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.TagKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
