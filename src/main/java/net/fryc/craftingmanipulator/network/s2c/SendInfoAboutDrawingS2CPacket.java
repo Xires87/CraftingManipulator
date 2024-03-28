@@ -1,6 +1,7 @@
 package net.fryc.craftingmanipulator.network.s2c;
 
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fryc.craftingmanipulator.CraftingManipulator;
 import net.fryc.craftingmanipulator.gui.Drawing;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
@@ -18,10 +19,15 @@ public class SendInfoAboutDrawingS2CPacket {
             if(player.currentScreenHandler instanceof AbstractRecipeScreenHandler<?>){
                 ((DrawsSelectedTextures) player.currentScreenHandler).informAboutItemModification();
 
+                String id;
                 while(buf.isReadable()){
-                    Drawing drawing = CMRegistries.DRAWINGS.get(buf.readString());
+                    id = buf.readString();
+                    Drawing drawing = CMRegistries.DRAWINGS.get(id);
                     if(drawing != null){
                         drawing.enabled = true;
+                    }
+                    else{
+                        CraftingManipulator.LOGGER.warn("Unable to get drawing with following id: " + id);
                     }
                 }
             }

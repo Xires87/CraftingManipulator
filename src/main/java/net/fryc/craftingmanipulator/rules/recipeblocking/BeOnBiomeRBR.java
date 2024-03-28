@@ -42,7 +42,10 @@ public class BeOnBiomeRBR extends RecipeBlockingRules implements HasUnlockCondit
     public ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         if(this.isItemAffectedByThisRule(craftedItem)){
             if(!ConditionsHelper.isOnCorrectBiome(player, world, this.neededBiomes)){
-                return this.isReversed() ? craftedItem : ItemStack.EMPTY;
+                craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;
+            }
+            else {
+                craftedItem = this.isReversed() ? ItemStack.EMPTY : craftedItem;
             }
 
             this.drawRedCrossWhenNeeded(craftedItem, player, handler);

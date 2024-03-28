@@ -1,6 +1,5 @@
 package net.fryc.craftingmanipulator.registry;
 
-import com.google.common.collect.Maps;
 import net.fryc.craftingmanipulator.CraftingManipulator;
 import net.fryc.craftingmanipulator.gui.Drawing;
 import net.fryc.craftingmanipulator.rules.CraftingRule;
@@ -11,8 +10,8 @@ import java.util.Objects;
 
 public class CMRegistries {
 
-    public static final HashMap<String, CraftingRule> CRAFTING_RULES = Maps.newHashMap();
-    public static final HashMap<String, Drawing> DRAWINGS = Maps.newHashMap();
+    public static final HashMap<String, CraftingRule> CRAFTING_RULES = new HashMap<>();
+    public static final HashMap<String, Drawing> DRAWINGS = new HashMap<>();
 
     public static CraftingRule registerCraftingRule(String id, CraftingRule rule){
         Objects.requireNonNull(id);

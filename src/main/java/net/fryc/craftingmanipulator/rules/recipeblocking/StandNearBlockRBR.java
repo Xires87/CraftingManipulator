@@ -21,9 +21,6 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
     @Nullable
     private HashSet<Block> additionalUnlockBlocks;
 
-    //private static final Text TOOLTIP_ON_RED_X = Text.of("testujemy se tooltipy wololololololololololol");
-
-
 
     /**
      * Blocks recipes and unlocks them when player stands near one of the blocks specified in tag or HashSet
@@ -67,6 +64,9 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
         if(this.isItemAffectedByThisRule(craftedItem)){
             if(!ConditionsHelper.standsNearCorrectBlock(player, world, this.unlockBlocks, this.additionalUnlockBlocks)){
                 craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;
+            }
+            else {
+                craftedItem = this.isReversed() ? ItemStack.EMPTY : craftedItem;
             }
 
             this.drawRedCrossWhenNeeded(craftedItem, player, handler);
