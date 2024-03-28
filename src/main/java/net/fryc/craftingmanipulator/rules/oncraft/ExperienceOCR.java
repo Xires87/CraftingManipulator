@@ -61,7 +61,7 @@ public class ExperienceOCR extends OnCraftRules{
                 else {
                     player.addExperienceLevels(this.getXp());
                 }
-                if(this.getXp() > 0) world.playSound(player, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, this.random.nextFloat(0.4F, 1.0F));
+                if(this.getXp() > 0) world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F, this.random.nextFloat(0.4F, 1.0F));
             }
         }
     }
