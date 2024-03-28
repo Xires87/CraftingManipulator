@@ -24,11 +24,11 @@ abstract class RecipeBlockingRules extends AbstractCraftingRule {
         if(craftedItem.isEmpty()){
             if(handler instanceof PlayerScreenHandler){
                 this.informAboutItemModification(player, "inventory_red_x");
-                //this.drawMouseOverTooltip(player, TOOLTIP_ON_RED_X, 134, 28, 18, 15);
+                //this.drawMouseOverTooltip(player, Text.of("Nie mozesz se craftnac"), 134, 28, 18, 15);
             }
             else {
                 this.informAboutItemModification(player, "crafting_red_x");
-                //this.drawMouseOverTooltip(player, TOOLTIP_ON_RED_X, 87, 32, 28, 21);
+                //this.drawMouseOverTooltip(player, Text.of("Nie mozesz se craftnac"), 87, 32, 28, 21);
             }
         }
     }

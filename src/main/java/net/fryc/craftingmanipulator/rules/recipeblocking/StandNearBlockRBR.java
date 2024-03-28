@@ -2,8 +2,8 @@ package net.fryc.craftingmanipulator.rules.recipeblocking;
 
 import net.fryc.craftingmanipulator.util.ConditionsHelper;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
@@ -60,7 +60,7 @@ public class StandNearBlockRBR extends RecipeBlockingRules implements HasUnlockC
 
 
     @Override
-    public ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
+    public ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
         if(this.isItemAffectedByThisRule(craftedItem)){
             if(!ConditionsHelper.standsNearCorrectBlock(player, world, this.unlockBlocks, this.additionalUnlockBlocks)){
                 craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;

@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fryc.craftingmanipulator.network.ModPackets;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.CraftingScreenHandler;
@@ -22,7 +22,7 @@ public interface CraftingRule {
      *  Executed only on SERVER, before item appears in result slot.
      *  Replacing an item with other item may collide with other rules (unless you replace it with ItemStack.EMPTY)
      */
-    ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory);
+    ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, CraftingInventory craftingInventory, CraftingResultInventory resultInventory);
 
     /**
      * Executed on both SERVER and CLIENT, after player takes output from result slot.

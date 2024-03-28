@@ -8,9 +8,9 @@ import net.fryc.craftingmanipulator.rules.CraftingRule;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTooltips;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -38,10 +38,10 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
     @Redirect(method = "updateResult(Lnet/minecraft/screen/ScreenHandler;" +
             "Lnet/minecraft/world/World;" +
             "Lnet/minecraft/entity/player/PlayerEntity;" +
-            "Lnet/minecraft/inventory/RecipeInputInventory;" +
+            "Lnet/minecraft/inventory/CraftingInventory;" +
             "Lnet/minecraft/inventory/CraftingResultInventory;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
-    private static ItemStack modifyItemFromRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
+    private static ItemStack modifyItemFromRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
         ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
         for(CraftingRule rule : CMRegistries.CRAFTING_RULES.values()){
             if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(handler)) continue;
