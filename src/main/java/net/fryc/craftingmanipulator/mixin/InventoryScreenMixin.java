@@ -5,7 +5,6 @@ import net.fryc.craftingmanipulator.gui.Drawing;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTextures;
 import net.fryc.craftingmanipulator.util.DrawsSelectedTooltips;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
@@ -34,7 +33,7 @@ abstract class InventoryScreenMixin extends AbstractInventoryScreen<PlayerScreen
                 if(drawing.isEnabled(dys.getScreenHandler().getClass())){
                     if(drawing.getTexture() != null){
                         RenderSystem.setShaderTexture(0, drawing.getTexture());
-                        DrawableHelper.drawTexture(
+                        this.drawTexture(
                                 matrices, this.x + drawing.getX(), this.y + drawing.getY(),
                                 this.backgroundWidth + drawing.getxInFile(), drawing.getyInFile(), drawing.getWidth(), drawing.getHeight()
                         );

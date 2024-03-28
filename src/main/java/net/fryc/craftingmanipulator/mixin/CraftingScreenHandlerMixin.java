@@ -13,7 +13,6 @@ import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,9 +39,9 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
             "Lnet/minecraft/entity/player/PlayerEntity;" +
             "Lnet/minecraft/inventory/CraftingInventory;" +
             "Lnet/minecraft/inventory/CraftingResultInventory;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/registry/DynamicRegistryManager;)Lnet/minecraft/item/ItemStack;"))
-    private static ItemStack modifyItemFromRecipe(CraftingRecipe recipe, Inventory inventory, DynamicRegistryManager manager , ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
-        ItemStack stack = recipe.craft(craftingInventory, world.getRegistryManager());
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/CraftingRecipe;craft(Lnet/minecraft/inventory/Inventory;)Lnet/minecraft/item/ItemStack;"))
+    private static ItemStack modifyItemFromRecipe(CraftingRecipe recipe, Inventory inventory, ScreenHandler handler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+        ItemStack stack = recipe.craft(craftingInventory);
         for(CraftingRule rule : CMRegistries.CRAFTING_RULES.values()){
             if(!rule.isEnabled() || !rule.isInAppriopriateScreenHandler(handler)) continue;
             stack = rule.modifyCraftedItem(stack, (ServerPlayerEntity) player, (ServerWorld) world, handler, craftingInventory, resultInventory);
