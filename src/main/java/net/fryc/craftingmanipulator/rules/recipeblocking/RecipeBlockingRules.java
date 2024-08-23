@@ -20,6 +20,9 @@ abstract class RecipeBlockingRules extends AbstractCraftingRule {
     public void onTakeOutput(ItemStack craftedItem, int amount, PlayerEntity player, World world){
     }
 
+    public void onCraftByCrafter(ItemStack craftedItem, World world){
+    }
+
     public void drawRedCrossWhenNeeded(ItemStack craftedItem, ServerPlayerEntity player, ScreenHandler handler){
         if(craftedItem.isEmpty()){
             if(handler instanceof PlayerScreenHandler){

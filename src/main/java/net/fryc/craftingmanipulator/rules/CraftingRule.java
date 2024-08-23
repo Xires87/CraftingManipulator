@@ -1,13 +1,14 @@
 package net.fryc.craftingmanipulator.rules;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fryc.craftingmanipulator.network.ModPackets;
+import net.fryc.craftingmanipulator.network.payloads.DrawMouseOverTooltipPayload;
+import net.fryc.craftingmanipulator.network.payloads.SendInfoAboutDrawingPayload;
+import net.fryc.craftingmanipulator.util.StringHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.CrafterScreenHandler;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
@@ -30,12 +31,17 @@ public interface CraftingRule {
      */
     void onTakeOutput(ItemStack craftedItem, int amount, PlayerEntity player, World world);
 
+    /**
+     * Executed only on SERVER, after Crafter crafts item
+     */
+    void onCraftByCrafter(ItemStack craftedItem, World world);
+
     default boolean isEnabled(){
         return true;
     }
 
     default boolean isInAppriopriateScreenHandler(ScreenHandler handler){
-        return handler.getClass() == CraftingScreenHandler.class || handler.getClass() == PlayerScreenHandler.class;
+        return handler.getClass() == CraftingScreenHandler.class || handler.getClass() == PlayerScreenHandler.class || handler.getClass() == CrafterScreenHandler.class;
     }
 
     default void informAboutItemModification(ServerPlayerEntity player){
@@ -48,22 +54,12 @@ public interface CraftingRule {
      * @param drawingId Drawings that will be drawn on gui
      */
     default void informAboutItemModification(ServerPlayerEntity player, String... drawingId){
-        PacketByteBuf buf = PacketByteBufs.create();
-        for(String id : drawingId){
-            if(id.isEmpty()) continue;
-            buf.writeString(id);
-        }
-        ServerPlayNetworking.send(player, ModPackets.SEND_INFO_ABOUT_ITEM_MODIFICATION, buf);
+        String oneBigString = StringHelper.convertToOneBigString(':', drawingId);
+        ServerPlayNetworking.send(player, new SendInfoAboutDrawingPayload(oneBigString));
     }
 
     default void drawMouseOverTooltip(ServerPlayerEntity player, Text content, int x, int y, int width, int height){
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeText(content);
-        buf.writeInt(x);
-        buf.writeInt(y);
-        buf.writeInt(width);
-        buf.writeInt(height);
-        ServerPlayNetworking.send(player, ModPackets.DRAW_MOUSE_OVER_TOOLTIP, buf);
+        ServerPlayNetworking.send(player, new DrawMouseOverTooltipPayload(content.getString(), x, y, width, height));
     }
 
 }

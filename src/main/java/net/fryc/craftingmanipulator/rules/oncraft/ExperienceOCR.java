@@ -65,4 +65,8 @@ public class ExperienceOCR extends OnCraftRules{
             }
         }
     }
+
+    @Override
+    public void onCraftByCrafter(ItemStack craftedItem, World world) {
+    }
 }

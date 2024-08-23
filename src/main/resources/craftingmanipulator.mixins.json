@@ -10,7 +10,6 @@
     "PlayerScreenHandlerMixin"
   ],
   "client": [
-    "ItemTooltipMixin",
     "CraftingScreenMixin",
     "InventoryScreenMixin"
   ],

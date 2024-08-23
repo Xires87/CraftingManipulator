@@ -60,4 +60,8 @@ public class PlaySoundOCR extends OnCraftRules{
             }
         }
     }
+
+    @Override
+    public void onCraftByCrafter(ItemStack craftedItem, World world) {
+    }
 }

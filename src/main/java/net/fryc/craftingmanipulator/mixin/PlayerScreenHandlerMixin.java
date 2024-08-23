@@ -1,8 +1,7 @@
 package net.fryc.craftingmanipulator.mixin;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fryc.craftingmanipulator.network.ModPackets;
+import net.fryc.craftingmanipulator.network.payloads.ResetDrawingPayload;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -23,7 +22,7 @@ abstract class PlayerScreenHandlerMixin {
     @Inject(method = "onContentChanged(Lnet/minecraft/inventory/Inventory;)V", at = @At("HEAD"))
     public void resetDrawings(Inventory inventory, CallbackInfo info) {
         if(!this.owner.getWorld().isClient()){
-            ServerPlayNetworking.send(((ServerPlayerEntity) this.owner), ModPackets.RESET_DRAWINGS, PacketByteBufs.empty());
+            ServerPlayNetworking.send(((ServerPlayerEntity) this.owner), new ResetDrawingPayload(true));
         }
     }
 }

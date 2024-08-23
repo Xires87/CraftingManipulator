@@ -2,6 +2,7 @@ package net.fryc.craftingmanipulator;
 
 import net.fabricmc.api.ModInitializer;
 import net.fryc.craftingmanipulator.gui.Drawing;
+import net.fryc.craftingmanipulator.network.ModPackets;
 import net.fryc.craftingmanipulator.registry.CMRegistries;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -13,8 +14,8 @@ import org.slf4j.LoggerFactory;
 public class CraftingManipulator implements ModInitializer {
 	public static final String MOD_ID = "craftingmanipulator";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	private static final Identifier CM_DRAWINGS_CRAFTING_TEXTURE = new Identifier(MOD_ID, "textures/gui/crafting_table_modified.png");
-	private static final Identifier CM_DRAWINGS_INVENTORY_TEXTURE = new Identifier(MOD_ID, "textures/gui/inventory_modified.png");
+	private static final Identifier CM_DRAWINGS_CRAFTING_TEXTURE = Identifier.of(MOD_ID, "textures/gui/crafting_table_modified.png");
+	private static final Identifier CM_DRAWINGS_INVENTORY_TEXTURE = Identifier.of(MOD_ID, "textures/gui/inventory_modified.png");
 	@Override
 	public void onInitialize() {
 		CMRegistries.registerDrawing("crafting_red_x", new Drawing(
@@ -31,6 +32,7 @@ public class CraftingManipulator implements ModInitializer {
 				PlayerScreenHandler.class, CM_DRAWINGS_INVENTORY_TEXTURE, 137, 16, 2, 38, 11, 11
 		));
 
+		ModPackets.registerPayloads();
 
 		/*
 		StandNearBlockRBR test = (StandNearBlockRBR) CMRegistries.registerCraftingRule("test_stand", new StandNearBlockRBR(ItemTags.BUTTONS, BlockTags.BAMBOO_BLOCKS));
