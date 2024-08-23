@@ -1,6 +1,7 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
 import net.fryc.craftingmanipulator.util.ConditionsHelper;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
@@ -9,6 +10,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -68,6 +70,14 @@ public class ItemInInventoryRBR extends RecipeBlockingRules implements HasUnlock
             }
 
             this.drawRedCrossWhenNeeded(craftedItem, player, handler);
+        }
+        return craftedItem;
+    }
+
+    @Override
+    public ItemStack modifyItemCrafterIsAboutToCraft(ItemStack craftedItem, ServerWorld world, BlockState crafterState, BlockPos crafterPos) {
+        if(this.isItemAffectedByThisRule(craftedItem)){
+            craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;
         }
         return craftedItem;
     }

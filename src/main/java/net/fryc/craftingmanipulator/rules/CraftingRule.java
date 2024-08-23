@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fryc.craftingmanipulator.network.payloads.DrawMouseOverTooltipPayload;
 import net.fryc.craftingmanipulator.network.payloads.SendInfoAboutDrawingPayload;
 import net.fryc.craftingmanipulator.util.StringHelper;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
@@ -15,6 +16,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface CraftingRule {
@@ -24,6 +26,12 @@ public interface CraftingRule {
      *  Replacing an item with other item may collide with other rules (unless you replace it with ItemStack.EMPTY)
      */
     ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory);
+
+    /**
+     *  Executed only on SERVER, before item is crafted by Crafter
+     *  Replacing an item with other item may collide with other rules (unless you replace it with ItemStack.EMPTY)
+     */
+    ItemStack modifyItemCrafterIsAboutToCraft(ItemStack craftedItem, ServerWorld world, BlockState crafterState, BlockPos crafterPos);
 
     /**
      * Executed on both SERVER and CLIENT, after player takes output from result slot.

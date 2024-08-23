@@ -32,8 +32,7 @@ public class ConditionsHelper {
         return returnValue;
     }
 
-    public static boolean standsNearCorrectBlock(PlayerEntity player, World world , @Nullable TagKey<Block> blocks, @Nullable HashSet<Block> additionalBlocks){
-        BlockPos pos = player.getBlockPos();
+    public static boolean standsNearCorrectBlock(BlockPos pos, World world , @Nullable TagKey<Block> blocks, @Nullable HashSet<Block> additionalBlocks){
         for (BlockPos blockPos : BlockPos.iterate(pos.add(-5, -2, -5), pos.add(5, 3, 5))) {
             if(isCorrectBlock(world.getBlockState(blockPos).getBlock(), blocks, additionalBlocks)){
                 return true;
@@ -53,9 +52,9 @@ public class ConditionsHelper {
         return returnValue;
     }
 
-    public static boolean isOnCorrectBiome(PlayerEntity player, World world, @Nullable TagKey<Biome> biomes){
+    public static boolean isOnCorrectBiome(BlockPos pos, World world, @Nullable TagKey<Biome> biomes){
         if(biomes == null) return false;
-        return world.getBiomeAccess().getBiome(player.getBlockPos()).isIn(biomes);
+        return world.getBiomeAccess().getBiome(pos).isIn(biomes);
     }
 
     public static boolean playerHasLevel(PlayerEntity player, int playerLevel){

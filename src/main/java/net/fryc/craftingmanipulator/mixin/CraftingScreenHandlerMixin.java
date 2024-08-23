@@ -70,6 +70,4 @@ abstract class CraftingScreenHandlerMixin implements DrawsSelectedTextures, Draw
         }
     }
 
-    // TODO zrobic mixina na craftera
-
 }

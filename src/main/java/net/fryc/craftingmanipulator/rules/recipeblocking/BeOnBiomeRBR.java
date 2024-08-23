@@ -1,6 +1,7 @@
 package net.fryc.craftingmanipulator.rules.recipeblocking;
 
 import net.fryc.craftingmanipulator.util.ConditionsHelper;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.Item;
@@ -9,6 +10,7 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +43,7 @@ public class BeOnBiomeRBR extends RecipeBlockingRules implements HasUnlockCondit
     @Override
     public ItemStack modifyCraftedItem(ItemStack craftedItem, ServerPlayerEntity player, ServerWorld world, ScreenHandler handler, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory) {
         if(this.isItemAffectedByThisRule(craftedItem)){
-            if(!ConditionsHelper.isOnCorrectBiome(player, world, this.neededBiomes)){
+            if(!ConditionsHelper.isOnCorrectBiome(player.getBlockPos(), world, this.neededBiomes)){
                 craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;
             }
             else {
@@ -49,6 +51,19 @@ public class BeOnBiomeRBR extends RecipeBlockingRules implements HasUnlockCondit
             }
 
             this.drawRedCrossWhenNeeded(craftedItem, player, handler);
+        }
+        return craftedItem;
+    }
+
+    @Override
+    public ItemStack modifyItemCrafterIsAboutToCraft(ItemStack craftedItem, ServerWorld world, BlockState crafterState, BlockPos crafterPos) {
+        if(this.isItemAffectedByThisRule(craftedItem)){
+            if(!ConditionsHelper.isOnCorrectBiome(crafterPos, world, this.neededBiomes)){
+                craftedItem = this.isReversed() ? craftedItem : ItemStack.EMPTY;
+            }
+            else {
+                craftedItem = this.isReversed() ? ItemStack.EMPTY : craftedItem;
+            }
         }
         return craftedItem;
     }
