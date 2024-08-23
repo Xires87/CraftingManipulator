@@ -10,7 +10,7 @@ For build.gradle:
 }
 
 dependencies {
-    modImplementation 'com.github.Xires87:CraftingManipulator:4.2.0'
+    modImplementation 'com.github.Xires87:CraftingManipulator:5.2.0'
 }
 ```
 
