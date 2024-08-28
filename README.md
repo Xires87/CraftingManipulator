@@ -3,7 +3,7 @@
 API used to modify crafting results in crafting table
 
 
-For build.gradle:
+For build.gradle (1.21):
 ```groovy
   repositories {
     maven { url 'https://jitpack.io' }
