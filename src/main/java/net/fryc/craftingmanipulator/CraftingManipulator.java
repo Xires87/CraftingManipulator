@@ -9,7 +9,16 @@ import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/*
+import net.fryc.craftingmanipulator.rules.oncraft.ExperienceOCR;
+import net.fryc.craftingmanipulator.rules.recipeblocking.ItemInInventoryRBR;
+import net.fryc.craftingmanipulator.rules.recipeblocking.PlayerLevelRBR;
+import net.fryc.craftingmanipulator.rules.recipeblocking.StandNearBlockRBR;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.ItemTags;
+*/
 
 public class CraftingManipulator implements ModInitializer {
 	public static final String MOD_ID = "craftingmanipulator";

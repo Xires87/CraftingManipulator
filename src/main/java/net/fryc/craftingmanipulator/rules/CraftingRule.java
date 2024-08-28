@@ -67,7 +67,7 @@ public interface CraftingRule {
     }
 
     default void drawMouseOverTooltip(ServerPlayerEntity player, Text content, int x, int y, int width, int height){
-        ServerPlayNetworking.send(player, new DrawMouseOverTooltipPayload(content.getString(), x, y, width, height));
+        ServerPlayNetworking.send(player, new DrawMouseOverTooltipPayload(content, x, y, width, height));
     }
 
 }

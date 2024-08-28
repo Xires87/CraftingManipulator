@@ -13,7 +13,7 @@ public class DrawMouseOverTooltipS2CPacket {
         ClientPlayerEntity player = context.player();
         if(player != null){
             if(player.currentScreenHandler instanceof AbstractRecipeScreenHandler<?, ?>){
-                Text text = Text.of(payload.text());
+                Text text = payload.text();
                 ((DrawsSelectedTooltips) player.currentScreenHandler).addTooltipToDraw(text, payload.x(), payload.y(), payload.width(), payload.height());
             }
         }
