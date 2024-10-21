@@ -15,9 +15,10 @@ dependencies {
 ```
 
 ---------------------------------------------------------------------------
-# [Wiki](https://github.com/Xires87/CraftingManipulator/wiki)
-# [Some examples](https://github.com/Xires87/HammersAndSmithing/blob/master/src/main/java/net/fryc/hammersandtables/craftingManipulator/Rules.java)
-# [CurseForge](https://www.curseforge.com/minecraft/mc-mods/crafting-manipulator)
+### [Wiki](https://github.com/Xires87/CraftingManipulator/wiki)
+### [Some examples](https://github.com/Xires87/HammersAndSmithing/blob/master/src/main/java/net/fryc/hammersandtables/craftingManipulator/Rules.java)
+### [CurseForge](https://www.curseforge.com/minecraft/mc-mods/crafting-manipulator)
+### [Modrinth](https://modrinth.com/mod/crafting-manipulator)
 
 
 
